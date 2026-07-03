@@ -22,7 +22,7 @@ Connect this repo to the `cafe-tataoro-com` Worker in the Cloudflare dashboard
 ## Voting
 
 - **Out of the box:** votes are per-device (localStorage). The page works with no backend and shows an "offline" label — nothing to configure.
-- **Shared live tally (optional):** create a KV namespace and bind it as `VOTES` (Production + Preview), then uncomment the `kv_namespaces` line in `wrangler.jsonc`. The Worker's `/api/votes` GET/POST then drives a shared count.
+- **Shared live tally:** enabled — KV namespace `romance_bakeoff_votes` (`221d5e24388b4c53aa4e5c836d7f811a`) is bound as `VOTES` in `wrangler.jsonc`. The Worker's `/api/votes` GET/POST drives a shared count. Votes still fall back to per-device if the binding is ever removed.
 
 ## Open items before this becomes the permanent storefront
 
