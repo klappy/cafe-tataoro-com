@@ -1,0 +1,8 @@
+{
+  "name": "cafe-tataoro-com",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-07-03",
+  "assets": { "directory": "./public", "binding": "ASSETS" }
+  // Add after creating the KV namespace:
+  // "kv_namespaces": [{ "binding": "VOTES", "id": "<namespace-id>" }]
+}
