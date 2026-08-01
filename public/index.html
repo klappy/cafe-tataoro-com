@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Romance by Tata Oro — A special cup of coffee for everyday people | Café Tata Oro</title>
-<meta name="description" content="Romance by Tata Oro is a small-lot Colombian blend — a special cup of coffee for everyday people, from Tata Oro.">
+<title>Romance by Tata Oro — A Colombian soul. An American spirit. | Café Tata Oro</title>
+<meta name="description" content="Romance by Tata Oro — a small-lot Colombian blend. A Colombian soul. An American spirit. One beautiful blend.">
 <meta property="og:title" content="Romance by Tata Oro — Two stories. One cup.">
-<meta property="og:description" content="A small-lot Colombian blend — a special cup of coffee for everyday people, from Tata Oro.">
+<meta property="og:description" content="A small-lot Colombian blend. A Colombian soul. An American spirit. One beautiful blend.">
 <meta property="og:image" content="https://cafe.tataoro.com/assets/og-image.png">
 <meta property="og:url" content="https://cafe.tataoro.com/">
 <meta property="og:type" content="website">
@@ -34,6 +34,12 @@ h2{font-size:clamp(32px,5vw,52px);margin-bottom:28px}
 p{max-width:62ch}
 .divider{width:64px;height:1px;background:var(--gold-deep);margin:0 0 32px}
 
+/* Language toggle */
+html[data-lang="en"] .l-es{display:none}
+html[data-lang="es"] .l-en{display:none}
+.lang-pill{position:fixed;top:16px;right:16px;z-index:60;background:rgba(10,10,10,.7);backdrop-filter:blur(6px);color:var(--gold);border:1px solid var(--gold-deep);font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;padding:9px 16px;cursor:pointer;transition:background .2s,color .2s}
+.lang-pill:hover{background:var(--gold);color:var(--ink)}
+
 /* Hero */
 .hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;padding:120px 24px 80px;overflow:hidden}
 .steam{position:absolute;top:6%;left:50%;transform:translateX(-50%);width:120px;height:150px;pointer-events:none;opacity:.5}
@@ -58,10 +64,16 @@ p{max-width:62ch}
 .cues{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:22px;font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--cocoa)}
 .cues span::after{content:"·";margin-left:12px;color:var(--gold-deep)}
 .cues span:last-child::after{content:""}
+.cues .pair::after{content:"·";margin-left:12px;color:var(--gold-deep)}
+.cues .pair:last-child::after{content:""}
+.cues .pair span::after{content:"";margin-left:0}
 
 /* Story */
 .story p{font-size:17px;color:var(--cream);margin-bottom:22px}
 .story em{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:1.15em}
+.story .voice{font-family:var(--serif);font-size:20px;line-height:1.6;color:var(--cream)}
+.story .voice em{font-size:1em}
+.story .sig{display:block;font-family:var(--sans);font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold-deep);margin:10px 0 30px}
 
 /* Blend */
 .blend .grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
@@ -95,8 +107,8 @@ p{max-width:62ch}
 /* Footer */
 footer{border-top:1px solid var(--irish);padding:56px 24px;text-align:center;font-size:13px;color:var(--cocoa)}
 footer .bp{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--cream);max-width:56ch;margin:0 auto 10px}
-footer .es{color:var(--cocoa)}
 footer .links{margin-top:26px;display:flex;gap:22px;justify-content:center;flex-wrap:wrap;font-size:12px;letter-spacing:.2em;text-transform:uppercase}
+footer .lang-link{background:none;border:0;color:var(--gold);font-family:var(--sans);font-size:12px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;padding:0}
 
 /* Reveal */
 @media (prefers-reduced-motion: no-preference){
@@ -108,6 +120,8 @@ footer .links{margin-top:26px;display:flex;gap:22px;justify-content:center;flex-
 </head>
 <body>
 
+<button class="lang-pill" id="langPill" type="button" aria-label="Cambiar idioma / Change language">ES</button>
+
 <!-- 1 · Hero -->
 <header class="hero">
   <svg class="steam" viewBox="0 0 120 150" aria-hidden="true">
@@ -116,35 +130,52 @@ footer .links{margin-top:26px;display:flex;gap:22px;justify-content:center;flex-
   </svg>
   <div class="wordmark">Romance</div>
   <div class="byline">By Tata Oro</div>
-  <div class="tagline">Two stories. One cup.</div>
-  <p class="position">A special cup of coffee for everyday people.</p>
-  <div class="cta"><a class="btn buy-link" href="#buy">Buy — $27.99</a></div>
+  <div class="tagline"><span class="l-en">Two stories. One cup.</span><span class="l-es">Dos historias. Una taza.</span></div>
+  <p class="position"><span class="l-en">A Colombian soul. An American spirit. One beautiful blend.</span><span class="l-es">Un alma colombiana. Un espíritu americano. Una mezcla hermosa.</span></p>
+  <div class="cta"><a class="btn buy-link" href="#buy"><span class="l-en">Buy — $27.99</span><span class="l-es">Comprar — $27.99</span></a></div>
   <img class="bag" src="/assets/romance-front.jpg" alt="Romance by Tata Oro — matte black 12 oz coffee bag" fetchpriority="high">
 </header>
 
 <!-- 2 · Promise strip -->
 <div class="promise reveal">
-  <div class="line">A special cup of coffee for everyday people.</div>
-  <div class="cues"><span>Small-lot</span><span>Hand-picked</span><span>Medium roast</span></div>
+  <div class="line"><span class="l-en">A Colombian soul. An American spirit. One beautiful blend.</span><span class="l-es">Un alma colombiana. Un espíritu americano. Una mezcla hermosa.</span></div>
+  <div class="cues">
+    <span class="pair"><span class="l-en">Small-lot</span><span class="l-es">Lote pequeño</span></span>
+    <span class="pair"><span class="l-en">Hand-picked</span><span class="l-es">Recolectado a mano</span></span>
+    <span class="pair"><span class="l-en">Medium roast</span><span class="l-es">Tueste medio</span></span>
+  </div>
 </div>
 
 <!-- 3 · The Story -->
 <section class="story reveal" id="story">
   <div class="wrap">
-    <div class="kicker">The Story</div>
-    <h2>It started with <em>algún día</em>.</h2>
+    <div class="kicker"><span class="l-en">The Story</span><span class="l-es">La Historia</span></div>
+    <h2><span class="l-en">It started with <em>algún día</em>.</span><span class="l-es">Empezó con un <em>algún día</em>.</span></h2>
     <div class="divider"></div>
-    <p>While Chris and Tatiana were dating, they traded "someday" daydreams. After they married, someday became a daily ritual: a chocolate-note coffee with fresh-ground cinnamon bark and panela — the same cup, every morning, for more than eighteen months.</p>
-    <p>This blend recreates that exact cup, with beans grown near Tatiana's Colombian hometown. Three people, independently and without planning it, reached for the same word to describe it. So that's what it's called.</p>
-    <p><em>Two stories. One cup.</em></p>
+
+    <div class="l-en">
+      <p class="voice">“They say that when you emigrate, you leave many things behind — but you carry with you a part of who you are. For me, it was coffee.</p>
+      <p class="voice">“When I came to this country, I never imagined that someday — <em>algún día</em> — I would be here brewing Colombian coffee beside the love of my life. In time I found love, built a home, a family — and discovered that the best stories are born when two worlds meet.</p>
+      <p class="voice">“That is why Romance was born.”<span class="sig">— Tatiana</span></p>
+      <p>Every morning for almost two years of marriage — even from the road — Chris has made Tatiana’s coffee: chocolate, panela, fresh-ground cinnamon. Chocolates are the gift of romance; cinnamon is its warmth. He asked a roaster to find coffees that tasted like exactly that — and they delivered.</p>
+      <p><em>Two stories. One cup.</em></p>
+    </div>
+
+    <div class="l-es">
+      <p class="voice">«Dicen que cuando emigras dejas muchas cosas atrás — pero también llevas contigo una parte de quien eres. En mi caso, fue el café.</p>
+      <p class="voice">«Cuando llegué a este país, jamás imaginé que <em>algún día</em> estaría aquí preparando un café colombiano junto al amor de mi vida. Con el tiempo encontré el amor, construí un hogar, una familia — y descubrí que las mejores historias nacen cuando dos mundos se encuentran.</p>
+      <p class="voice">«Y por eso nació Romance.»<span class="sig">— Tatiana</span></p>
+      <p>Cada mañana, durante casi dos años de matrimonio — incluso de viaje — Chris ha preparado el café de Tatiana: chocolate, panela y canela recién molida. Los chocolates son el regalo del romance; la canela, su calidez. Le pidió a un tostador cafés que supieran exactamente a eso — y lo lograron.</p>
+      <p><em>Dos historias. Una taza.</em></p>
+    </div>
   </div>
 </section>
 
 <!-- 4/5 · The Blend & Provenance -->
 <section class="blend reveal" id="blend">
   <div class="wrap">
-    <div class="kicker">The Blend</div>
-    <h2>A Colombian soul. An American spirit.</h2>
+    <div class="kicker"><span class="l-en">The Blend</span><span class="l-es">La Mezcla</span></div>
+    <h2><span class="l-en">A Colombian soul. An American spirit.</span><span class="l-es">Un alma colombiana. Un espíritu americano.</span></h2>
     <div class="divider"></div>
     <div class="grid">
       <div>
@@ -156,7 +187,7 @@ footer .links{margin-top:26px;display:flex;gap:22px;justify-content:center;flex-
           <div class="name">Bourbon Rosado</div>
           <div class="place">Huila, Colombia</div>
         </div>
-        <div class="facts">Medium roast · 12 oz / 340 g · Hand-picked, small-lot</div>
+        <div class="facts"><span class="l-en">Medium roast · 12 oz / 340 g · Hand-picked, small-lot</span><span class="l-es">Tueste medio · 12 oz / 340 g · Recolectado a mano, lote pequeño</span></div>
       </div>
       <img src="/assets/romance-back.jpg" alt="Romance by Tata Oro back label — Castillo Lavado and Bourbon Rosado blend details" loading="lazy">
     </div>
@@ -166,20 +197,20 @@ footer .links{margin-top:26px;display:flex;gap:22px;justify-content:center;flex-
 <!-- 6 · Inside every bag -->
 <section class="inside reveal">
   <div class="wrap">
-    <div class="kicker">Inside Every Bag</div>
-    <h2>The long version of the story.</h2>
+    <div class="kicker"><span class="l-en">Inside Every Bag</span><span class="l-es">Dentro de Cada Bolsa</span></div>
+    <h2><span class="l-en">The long version of the story.</span><span class="l-es">La versión larga de la historia.</span></h2>
     <div class="divider"></div>
-    <p>Every bag carries a card with the story and a code that leads back here — where the whole of it lives. This first roast is ground; whole bean arrives with the next.</p>
+    <p><span class="l-en">Every bag carries a card with the story and a code that leads back here — where the whole of it lives. This first roast is ground; whole bean arrives with the next.</span><span class="l-es">Cada bolsa lleva una tarjeta con la historia y un código que conduce aquí — donde vive completa. Este primer tueste es molido; el grano entero llega con el próximo.</span></p>
   </div>
 </section>
 
 <!-- 7 · Trust / creator -->
 <section class="reveal">
   <div class="wrap">
-    <div class="kicker">From Tata Oro</div>
-    <h2>From someone you already trust.</h2>
+    <div class="kicker"><span class="l-en">From Tata Oro</span><span class="l-es">De Tata Oro</span></div>
+    <h2><span class="l-en">From someone you already trust.</span><span class="l-es">De alguien en quien ya confías.</span></h2>
     <div class="divider"></div>
-    <p>Romance extends Tatiana's Tata Oro brand — the same warmth and the same taste, brought to the cup she actually drinks.</p>
+    <p><span class="l-en">Romance extends Tatiana’s Tata Oro brand — the same warmth and the same taste, brought to the cup she actually drinks.</span><span class="l-es">Romance extiende la marca Tata Oro de Tatiana — la misma calidez y el mismo gusto, llevados a la taza que ella realmente toma.</span></p>
   </div>
 </section>
 
@@ -190,35 +221,35 @@ footer .links{margin-top:26px;display:flex;gap:22px;justify-content:center;flex-
     <img src="/assets/romance-front.jpg" alt="" loading="lazy">
     <div class="price">$27.99</div>
     <div class="field">
-      <label for="grind">Grind</label>
+      <label for="grind"><span class="l-en">Grind</span><span class="l-es">Molienda</span></label>
       <select id="grind">
-        <option value="49618530697368">Ground</option>
-        <option value="49618614714520" disabled>Whole bean — next roast</option>
+        <option value="49618530697368" data-en="Ground" data-es="Molido">Ground</option>
+        <option value="49618614714520" disabled data-en="Whole bean — coming soon" data-es="Grano entero — muy pronto">Whole bean — coming soon</option>
       </select>
     </div>
     <div class="field">
-      <label for="qty">Quantity</label>
+      <label for="qty"><span class="l-en">Quantity</span><span class="l-es">Cantidad</span></label>
       <select id="qty">
-        <option value="1">1 bag</option>
-        <option value="2">2 bags</option>
-        <option value="3">3 bags</option>
-        <option value="4">4 bags</option>
-        <option value="5">5 bags</option>
+        <option value="1" data-en="1 bag" data-es="1 bolsa">1 bag</option>
+        <option value="2" data-en="2 bags" data-es="2 bolsas">2 bags</option>
+        <option value="3" data-en="3 bags" data-es="3 bolsas">3 bags</option>
+        <option value="4" data-en="4 bags" data-es="4 bolsas">4 bags</option>
+        <option value="5" data-en="5 bags" data-es="5 bolsas">5 bags</option>
       </select>
     </div>
-    <a class="btn" id="buyBtn" href="https://tataoro.com/cart/49618530697368:1?utm_source=cafe.tataoro.com&utm_medium=landing&utm_campaign=romance">Buy now</a>
-    <div class="buy-note">Secure checkout · Ships from Florida</div>
+    <a class="btn" id="buyBtn" href="https://tataoro.com/cart/49618530697368:1?utm_source=cafe.tataoro.com&utm_medium=landing&utm_campaign=romance"><span class="l-en">Buy now</span><span class="l-es">Comprar ahora</span></a>
+    <div class="buy-note"><span class="l-en">Secure checkout · Ships from Florida</span><span class="l-es">Pago seguro · Envíos desde Florida</span></div>
   </div>
 </section>
 
 <!-- 9 · Footer -->
 <footer>
-  <p class="bp">Romance by Tata Oro is a small-lot Colombian blend — a special cup of coffee for everyday people, from Tata Oro.</p>
-  <p class="bp es">Romance by Tata Oro es una mezcla colombiana de lote pequeño — un café especial para la gente de todos los días, de Tata Oro.</p>
+  <p class="bp"><span class="l-en">Romance by Tata Oro is a small-lot Colombian blend. A Colombian soul. An American spirit. One beautiful blend.</span><span class="l-es">Romance by Tata Oro es una mezcla colombiana de lote pequeño. Un alma colombiana. Un espíritu americano. Una mezcla hermosa.</span></p>
   <div class="links">
     <a href="mailto:cafe@tataoro.com">cafe@tataoro.com</a>
     <a href="https://instagram.com/cafe.tataoro" rel="noopener">@cafe.tataoro</a>
-    <a href="#story">The story</a>
+    <a href="#story"><span class="l-en">The story</span><span class="l-es">La historia</span></a>
+    <button class="lang-link" id="langFooter" type="button">Español</button>
   </div>
 </footer>
 
@@ -228,11 +259,34 @@ footer .links{margin-top:26px;display:flex;gap:22px;justify-content:center;flex-
     <div class="t">Romance</div>
     <div class="p">$27.99 · 12 oz</div>
   </div>
-  <a class="btn" id="stickyBtn" href="https://tataoro.com/cart/49618530697368:1?utm_source=cafe.tataoro.com&utm_medium=sticky&utm_campaign=romance">Buy</a>
+  <a class="btn" id="stickyBtn" href="https://tataoro.com/cart/49618530697368:1?utm_source=cafe.tataoro.com&utm_medium=sticky&utm_campaign=romance"><span class="l-en">Buy</span><span class="l-es">Comprar</span></a>
 </div>
 
 <script>
 (function(){
+  /* ---- Language toggle ---- */
+  var root=document.documentElement,
+      pill=document.getElementById('langPill'),
+      footBtn=document.getElementById('langFooter');
+  function apply(lang){
+    root.setAttribute('data-lang',lang);
+    root.setAttribute('lang',lang);
+    pill.textContent = lang==='en' ? 'ES' : 'EN';
+    footBtn.textContent = lang==='en' ? 'Español' : 'English';
+    var opts=document.querySelectorAll('option[data-en]');
+    for(var i=0;i<opts.length;i++){
+      opts[i].textContent = lang==='es' ? opts[i].getAttribute('data-es') : opts[i].getAttribute('data-en');
+    }
+    try{localStorage.setItem('cafe-lang',lang);}catch(e){}
+  }
+  function toggle(){apply(root.getAttribute('data-lang')==='en'?'es':'en');}
+  pill.addEventListener('click',toggle);
+  footBtn.addEventListener('click',toggle);
+  var saved=null;
+  try{saved=localStorage.getItem('cafe-lang');}catch(e){}
+  apply(saved || ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es' : 'en'));
+
+  /* ---- Cart wiring ---- */
   var grind=document.getElementById('grind'),qty=document.getElementById('qty'),
       buyBtn=document.getElementById('buyBtn'),stickyBtn=document.getElementById('stickyBtn');
   function cart(medium){
@@ -242,6 +296,7 @@ footer .links{margin-top:26px;display:flex;gap:22px;justify-content:center;flex-
   function sync(){buyBtn.href=cart('landing');stickyBtn.href=cart('sticky');}
   grind.addEventListener('change',sync);qty.addEventListener('change',sync);
 
+  /* ---- Sticky bar + reveals ---- */
   var bar=document.getElementById('stickyBar'),hero=document.querySelector('.hero'),buySec=document.getElementById('buy');
   if('IntersectionObserver' in window){
     var heroSeen=true,buySeen=false;
