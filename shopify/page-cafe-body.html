@@ -1,0 +1,488 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* cafe page: suppress theme chrome + WhatsApp FAB on THIS page only */
+.shopify-section-group-header-group,.shopify-section-group-footer-group{display:none!important}
+.rq-whatsapp-chat-container{display:none!important}
+.main-page-title{display:none!important}
+main .page-width,main .page-width--narrow{max-width:100%!important;padding:0!important;margin:0!important}
+main#MainContent{padding:0!important;margin:0!important}
+main .rte{max-width:100%!important;margin:0!important}
+main .rte>*:first-child{margin-top:0}
+
+:root{
+  --ink:#0A0A0A; --gold:#EAD1AE; --gold-deep:#C8A26A;
+  --butterscotch:#C39B6E; --cocoa:#D8C6B0; --irish:#4A3728;
+  --espresso:#6B4A3B; --cream:#EDE3D6;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Montserrat',-apple-system,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--cream);font-family:var(--sans);font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:var(--gold);text-decoration:none}
+section{padding:96px 24px}
+.wrap{max-width:960px;margin:0 auto}
+.kicker{font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:20px}
+h1,h2{font-family:var(--serif);font-weight:500;color:var(--gold);line-height:1.15}
+h2{font-size:clamp(32px,5vw,52px);margin-bottom:28px}
+p{max-width:62ch}
+.divider{width:64px;height:1px;background:var(--gold-deep);margin:0 0 32px}
+
+/* Language toggle */
+html[data-lang="en"] .l-es{display:none}
+html[data-lang="es"] .l-en{display:none}
+.lang-pill{position:fixed;top:16px;right:16px;z-index:60;background:rgba(10,10,10,.7);backdrop-filter:blur(6px);color:var(--gold);border:1px solid var(--gold-deep);font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;padding:9px 16px;cursor:pointer;transition:background .2s,color .2s}
+.lang-pill:hover{background:var(--gold);color:var(--ink)}
+
+/* Hero */
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;padding:120px 24px 80px;overflow:hidden}
+.steam{position:absolute;top:6%;left:50%;transform:translateX(-50%);width:120px;height:150px;pointer-events:none;opacity:.5}
+.steam path{fill:none;stroke:var(--gold-deep);stroke-width:1.2;stroke-linecap:round}
+@media (prefers-reduced-motion: no-preference){
+  .steam path{stroke-dasharray:220;stroke-dashoffset:220;animation:rise 7s ease-in-out infinite}
+  .steam path:nth-child(2){animation-delay:1.6s}
+  @keyframes rise{0%{stroke-dashoffset:220;opacity:0}25%{opacity:.9}70%{opacity:.5}100%{stroke-dashoffset:-220;opacity:0}}
+}
+.hero .wordmark{font-family:var(--serif);font-style:italic;font-size:clamp(64px,12vw,128px);color:var(--gold);line-height:1;letter-spacing:.01em}
+.hero .byline{font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:var(--cocoa);margin-top:10px}
+.hero .tagline{font-size:14px;letter-spacing:.3em;text-transform:uppercase;color:var(--cream);margin-top:40px}
+.hero .position{font-family:var(--serif);font-style:italic;font-size:clamp(19px,3vw,25px);color:var(--cocoa);margin-top:16px}
+.hero .specialty{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-deep);margin-top:22px}
+.hero .cta{margin-top:32px}
+.hero .bag{margin-top:64px;max-width:340px;filter:drop-shadow(0 30px 60px rgba(0,0,0,.7))}
+.btn{display:inline-block;background:var(--gold);color:var(--ink);font-family:var(--sans);font-weight:600;font-size:14px;letter-spacing:.18em;text-transform:uppercase;padding:18px 44px;border:0;cursor:pointer;transition:background .2s}
+.btn:hover{background:var(--gold-deep)}
+
+/* Promise strip */
+.promise{border-top:1px solid var(--irish);border-bottom:1px solid var(--irish);padding:44px 24px;text-align:center}
+.promise .line{font-family:var(--serif);font-style:italic;font-size:clamp(20px,3vw,27px);color:var(--gold)}
+.cues{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:22px;font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--cocoa)}
+.cues span::after{content:"·";margin-left:12px;color:var(--gold-deep)}
+.cues span:last-child::after{content:""}
+.cues .pair::after{content:"·";margin-left:12px;color:var(--gold-deep)}
+.cues .pair:last-child::after{content:""}
+.cues .pair span::after{content:"";margin-left:0}
+
+/* Story */
+.story p{font-size:17px;color:var(--cream);margin-bottom:22px}
+.story em{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:1.15em}
+.story .voice{font-family:var(--serif);font-size:20px;line-height:1.6;color:var(--cream)}
+.story .voice em{font-size:1em}
+.story .sig{display:block;font-family:var(--sans);font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold-deep);margin:10px 0 30px}
+
+/* Blend */
+.blend .grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+@media (max-width:720px){.blend .grid{grid-template-columns:1fr}}
+.origin{border-left:1px solid var(--gold-deep);padding-left:20px;margin-bottom:28px}
+.origin .name{font-family:var(--serif);font-size:24px;color:var(--gold)}
+.origin .place{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--cocoa);margin-top:6px}
+.facts{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--cocoa);margin-top:8px}
+.origin .notes{font-size:14px;color:var(--cream);margin-top:8px;max-width:40ch}
+.blend .together{font-family:var(--serif);font-size:19px;color:var(--cream);margin-top:26px}
+.blend .together em{color:var(--gold)}
+
+/* Inside every bag */
+.inside{background:#111;border-top:1px solid var(--irish);border-bottom:1px solid var(--irish)}
+.inside p{color:var(--cream)}
+
+/* Buy */
+.buy{background:linear-gradient(180deg,var(--ink) 0%,#140f0b 100%);text-align:center}
+.buy-card{max-width:460px;margin:0 auto;border:1px solid var(--irish);padding:44px 32px;background:rgba(10,10,10,.6)}
+.buy-card img{max-width:220px;margin:0 auto 28px}
+.card-specialty{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:4px}
+.price{font-family:var(--serif);font-size:44px;color:var(--gold);margin:2px 0 26px}
+.field{margin-bottom:18px;text-align:left}
+.field label{display:block;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--cocoa);margin-bottom:8px}
+.field select{width:100%;background:var(--ink);color:var(--cream);border:1px solid var(--irish);padding:14px;font-family:var(--sans);font-size:15px;letter-spacing:.06em}
+.buy-note{font-size:12px;color:var(--cocoa);margin-top:16px;letter-spacing:.08em}
+.grind-note{font-size:12.5px;color:var(--cocoa);text-align:left;margin:-8px 0 20px;line-height:1.65;opacity:.92}
+.field input{width:100%;background:var(--ink);color:var(--cream);border:1px solid var(--irish);padding:14px;font-family:var(--sans);font-size:15px;letter-spacing:.06em}
+.buy-card .btn{display:block;width:100%;margin-top:6px}
+#notifyBtn{width:100%}
+.notify-done{font-size:14px;color:var(--gold);margin-top:16px;font-family:var(--serif);font-style:italic}
+.notify-err{font-size:13px;color:#d9a08a;margin-top:12px}
+
+/* Sticky bar */
+.sticky-bar{position:fixed;left:0;right:0;bottom:0;background:rgba(10,10,10,.94);backdrop-filter:blur(8px);border-top:1px solid var(--irish);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 20px;transform:translateY(110%);transition:transform .3s;z-index:50}
+.sticky-bar.show{transform:translateY(0)}
+.sticky-bar .t{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--gold)}
+.sticky-bar .p{font-size:13px;color:var(--cocoa);letter-spacing:.1em}
+.sticky-bar .btn{padding:12px 26px;font-size:12px}
+
+/* Footer */
+footer{border-top:1px solid var(--irish);padding:56px 24px;text-align:center;font-size:13px;color:var(--cocoa)}
+footer .bp{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--cream);max-width:56ch;margin:0 auto 10px}
+footer .links{margin-top:26px;display:flex;gap:22px;justify-content:center;flex-wrap:wrap;font-size:12px;letter-spacing:.2em;text-transform:uppercase}
+footer .lang-link{background:none;border:0;color:var(--gold);font-family:var(--sans);font-size:12px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;padding:0}
+
+/* Reveal */
+@media (prefers-reduced-motion: no-preference){
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+}
+.position .s,.promise .line .s,footer .bp .s{display:inline-block}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* ---- Exit survey ---- */
+.exit-veil{position:fixed;inset:0;background:rgba(20,12,8,.55);backdrop-filter:blur(3px);z-index:60;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+.exit-veil.open{opacity:1;pointer-events:auto}
+@media(min-width:640px){.exit-veil{align-items:center}}
+.exit-card{background:var(--cream,#faf6f1);color:#2b2118;max-width:420px;width:100%;border-radius:18px 18px 0 0;padding:26px 22px 30px;box-shadow:0 -8px 40px rgba(0,0,0,.25)}
+@media(min-width:640px){.exit-card{border-radius:18px;padding:30px 28px}}
+.exit-card h3{font-family:var(--serif,'Cormorant Garamond',serif);font-size:1.35rem;margin:0 0 4px;color:#4a2c17}
+.exit-card .exit-sub{font-size:.85rem;opacity:.75;margin:0 0 16px}
+.exit-opt{display:block;width:100%;text-align:left;background:#fff;border:1px solid #e5d9cc;border-radius:10px;padding:12px 14px;margin:8px 0;font-size:.92rem;cursor:pointer;font-family:inherit}
+.exit-opt:hover{border-color:#b98a5a}
+.exit-answer{display:none;background:#fff;border-radius:12px;padding:16px;margin-top:14px;font-size:.9rem;line-height:1.5;border-left:3px solid #b98a5a}
+.exit-answer.show{display:block}
+.exit-cta{display:inline-block;margin-top:12px;background:#6b4226;color:#fff;border:0;border-radius:999px;padding:10px 18px;font-size:.9rem;cursor:pointer;text-decoration:none}
+.exit-close{position:absolute;background:none;border:0;font-size:1.3rem;cursor:pointer;color:#6b4226;right:18px;margin-top:-6px}
+.exit-wrap{position:relative}
+
+</style>
+
+
+<button class="lang-pill" id="langPill" type="button" aria-label="Cambiar idioma / Change language">ES</button>
+
+<!-- 1 · Hero -->
+<header class="hero">
+  <svg class="steam" viewBox="0 0 120 150" aria-hidden="true">
+    <path d="M48 145 C40 115, 62 100, 52 70 C44 46, 58 30, 54 8"/>
+    <path d="M72 145 C80 118, 58 98, 70 68 C78 44, 64 28, 68 8"/>
+  </svg>
+  <div class="wordmark">Romance</div>
+  <div class="byline">By Tata Oro</div>
+  <div class="tagline"><span class="l-en">Two stories. One cup.</span><span class="l-es">Dos historias. Una taza.</span></div>
+  <p class="position"><span class="l-en"><span class="s">A Colombian soul.</span> <span class="s">An American spirit.</span><br><span class="s">One beautiful blend.</span></span><span class="l-es"><span class="s">Un alma colombiana.</span> <span class="s">Un espíritu americano.</span><br><span class="s">Una mezcla hermosa.</span></span></p>
+  <div class="specialty"><span class="l-en">Specialty-grade · Small-lot · A rare Bourbon Rosado at its heart</span><span class="l-es">Café de especialidad · Lote pequeño · Un excepcional Bourbon Rosado en su corazón</span></div>
+  <div class="cta"><a class="btn buy-link" href="#buy"><span class="l-en">Buy — $27.99</span><span class="l-es">Comprar — $27.99</span></a></div>
+  <img class="bag" src="https://cafe.tataoro.com/assets/romance-front.jpg" alt="Romance by Tata Oro — matte black 12 oz coffee bag" fetchpriority="high">
+</header>
+
+<!-- 2 · Promise strip -->
+<div class="promise reveal">
+  <div class="line"><span class="l-en"><span class="s">A Colombian soul.</span> <span class="s">An American spirit.</span><br><span class="s">One beautiful blend.</span></span><span class="l-es"><span class="s">Un alma colombiana.</span> <span class="s">Un espíritu americano.</span><br><span class="s">Una mezcla hermosa.</span></span></div>
+  <div class="cues">
+    <span class="pair"><span class="l-en">Small-lot</span><span class="l-es">Lote pequeño</span></span>
+    <span class="pair"><span class="l-en">Hand-picked</span><span class="l-es">Recolectado a mano</span></span>
+    <span class="pair"><span class="l-en">Medium roast</span><span class="l-es">Tueste medio</span></span>
+  </div>
+</div>
+
+<!-- 3 · The Story -->
+<section class="story reveal" id="story">
+  <div class="wrap">
+    <div class="kicker"><span class="l-en">The Story</span><span class="l-es">La Historia</span></div>
+    <h2><span class="l-en">It started with <em>algún día</em>.</span><span class="l-es">Empezó con un <em>algún día</em>.</span></h2>
+    <div class="divider"></div>
+
+    <div class="l-en">
+      <p class="voice">“They say that when you emigrate, you leave many things behind — but you carry with you a part of who you are. For me, it was coffee.</p>
+      <p class="voice">“When I came to this country, I never imagined that someday — <em>algún día</em> — I would be here brewing Colombian coffee beside the love of my life. In time I found love, built a home, a family — and discovered that the best stories are born when two worlds meet.</p>
+      <p class="voice">“That is why Romance was born.”<span class="sig">— Tatiana</span></p>
+      <p>Every morning for almost two years of marriage — even from the road — Chris has made Tatiana’s coffee: chocolate, panela, fresh-ground cinnamon. Chocolates are the gift of romance; cinnamon is its warmth. He asked a roaster to find coffees that tasted like exactly that — and they delivered.</p>
+      <p><em>Two stories. One cup.</em></p>
+    </div>
+
+    <div class="l-es">
+      <p class="voice">«Dicen que cuando emigras dejas muchas cosas atrás — pero también llevas contigo una parte de quien eres. En mi caso, fue el café.</p>
+      <p class="voice">«Cuando llegué a este país, jamás imaginé que <em>algún día</em> estaría aquí preparando un café colombiano junto al amor de mi vida. Con el tiempo encontré el amor, construí un hogar, una familia — y descubrí que las mejores historias nacen cuando dos mundos se encuentran.</p>
+      <p class="voice">«Y por eso nació Romance.»<span class="sig">— Tatiana</span></p>
+      <p>Cada mañana, durante casi dos años de matrimonio — incluso de viaje — Chris ha preparado el café de Tatiana: chocolate, panela y canela recién molida. Los chocolates son el regalo del romance; la canela, su calidez. Le pidió a un tostador cafés que supieran exactamente a eso — y lo lograron.</p>
+      <p><em>Dos historias. Una taza.</em></p>
+    </div>
+  </div>
+</section>
+
+<!-- 4/5 · The Blend & Provenance -->
+<section class="blend reveal" id="blend">
+  <div class="wrap">
+    <div class="kicker"><span class="l-en">The Blend</span><span class="l-es">La Mezcla</span></div>
+    <h2><span class="l-en">A Colombian soul. An American spirit.</span><span class="l-es">Un alma colombiana. Un espíritu americano.</span></h2>
+    <div class="divider"></div>
+    <div class="grid">
+      <div>
+        <div class="origin">
+          <div class="name">Castillo Lavado</div>
+          <div class="place">Cundinamarca, Colombia</div>
+          <div class="notes"><span class="l-en">Chocolate and panela — the deep, sweet body of the cup.</span><span class="l-es">Chocolate y panela — el cuerpo profundo y dulce de la taza.</span></div>
+        </div>
+        <div class="origin">
+          <div class="name">Bourbon Rosado</div>
+          <div class="place">Huila, Colombia</div>
+          <div class="notes"><span class="l-en">A delicate effervescence that drinks like cream, with a bright zing of canela.</span><span class="l-es">Una efervescencia delicada que se bebe como crema, con una chispa brillante de canela.</span></div>
+        </div>
+        <div class="facts"><span class="l-en">Medium roast · 12 oz / 340 g · Hand-picked, small-lot</span><span class="l-es">Tueste medio · 12 oz / 340 g · Recolectado a mano, lote pequeño</span></div>
+        <p class="together"><span class="l-en">Chris asked for coffees that tasted like chocolate, panela, and canela. The Castillo brings the chocolate and panela; the Rosado brings the sparkle and the cinnamon. Together they pour smooth and creamy — <em>“like cream in coffee, without any cream.”</em></span><span class="l-es">Chris pidió cafés que supieran a chocolate, panela y canela. El Castillo trae el chocolate y la panela; el Rosado trae la chispa y la canela. Juntos, una taza suave y cremosa — <em>«como crema en el café, sin nada de crema».</em></span></p>
+      </div>
+      <img src="https://cafe.tataoro.com/assets/romance-back.jpg" alt="Romance by Tata Oro back label — Castillo Lavado and Bourbon Rosado blend details" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- 6 · Inside every bag -->
+<section class="inside reveal">
+  <div class="wrap">
+    <div class="kicker"><span class="l-en">Inside Every Bag</span><span class="l-es">Dentro de Cada Bolsa</span></div>
+    <h2><span class="l-en">The long version of the story.</span><span class="l-es">La versión larga de la historia.</span></h2>
+    <div class="divider"></div>
+    <p><span class="l-en">Every bag carries a card with the story and a code that leads back here — where the whole of it lives. This first roast is ground; whole bean arrives with the next.</span><span class="l-es">Cada bolsa lleva una tarjeta con la historia y un código que conduce aquí — donde vive completa. Este primer tueste es molido; el grano entero llega con el próximo.</span></p>
+  </div>
+</section>
+
+<!-- 7 · Trust / creator -->
+<section class="reveal">
+  <div class="wrap">
+    <div class="kicker"><span class="l-en">From Tata Oro</span><span class="l-es">De Tata Oro</span></div>
+    <h2><span class="l-en">From someone you already trust.</span><span class="l-es">De alguien en quien ya confías.</span></h2>
+    <div class="divider"></div>
+    <p><span class="l-en">Romance extends Tatiana’s Tata Oro brand — the same warmth and the same taste, brought to the cup she actually drinks.</span><span class="l-es">Romance extiende la marca Tata Oro de Tatiana — la misma calidez y el mismo gusto, llevados a la taza que ella realmente toma.</span></p>
+  </div>
+</section>
+
+<!-- 8 · Buy block -->
+<section class="buy" id="buy">
+  <div class="buy-card reveal">
+    <div class="kicker">Romance by Tata Oro</div>
+    <img src="https://cafe.tataoro.com/assets/romance-front.jpg" alt="" loading="lazy">
+    <div class="card-specialty"><span class="l-en">Specialty Colombian coffee ☕ small-lot, hand-picked</span><span class="l-es">Café colombiano de especialidad ☕ lote pequeño, recolectado a mano</span></div>
+    <div class="price">$27.99</div>
+    <div class="field">
+      <label for="grind"><span class="l-en">Grind</span><span class="l-es">Molienda</span></label>
+      <select id="grind">
+        <option value="49618530697368" data-en="Ground" data-es="Molido">Ground</option>
+        <option value="49618614714520" data-en="Whole bean — coming soon" data-es="Grano entero — muy pronto">Whole bean — coming soon</option>
+      </select>
+    </div>
+    <div class="grind-note"><span class="l-en">This first small-lot roast is ground and ready to brew. Whole bean arrives with the next batch.</span><span class="l-es">Este primer tueste de lote pequeño es molido y listo para preparar. El grano entero llega con el próximo lote.</span></div>
+    <div class="field" id="qtyField">
+      <label for="qty"><span class="l-en">Quantity</span><span class="l-es">Cantidad</span></label>
+      <select id="qty">
+        <option value="1" data-en="1 bag" data-es="1 bolsa">1 bag</option>
+        <option value="2" data-en="2 bags" data-es="2 bolsas">2 bags</option>
+        <option value="3" data-en="3 bags" data-es="3 bolsas">3 bags</option>
+        <option value="4" data-en="4 bags" data-es="4 bolsas">4 bags</option>
+        <option value="5" data-en="5 bags" data-es="5 bolsas">5 bags</option>
+      </select>
+    </div>
+    <div class="field" id="notifyField" hidden>
+      <label for="notifyEmail"><span class="l-en">Your email</span><span class="l-es">Tu correo</span></label>
+      <input type="email" id="notifyEmail" autocomplete="email" inputmode="email" placeholder="you@example.com">
+    </div>
+    <a class="btn" id="buyBtn" href="https://tataoro.com/cart/49618530697368:1?utm_source=cafe.tataoro.com&utm_medium=landing&utm_campaign=romance"><span class="l-en">Buy now</span><span class="l-es">Comprar ahora</span></a>
+    <button class="btn" id="notifyBtn" type="button" hidden><span class="l-en">Notify me when whole bean arrives</span><span class="l-es">Avísame cuando llegue el grano entero</span></button>
+    <div class="notify-done" id="notifyDone" hidden><span class="l-en">You’re on the list — we’ll write when the whole bean lands.</span><span class="l-es">Estás en la lista — te escribimos cuando llegue el grano entero.</span></div>
+    <div class="notify-err" id="notifyErr" hidden><span class="l-en">That email didn’t go through — check it and try again.</span><span class="l-es">Ese correo no pasó — revísalo e inténtalo de nuevo.</span></div>
+    <div class="buy-note"><span class="l-en">Secure checkout · Ships from Florida</span><span class="l-es">Pago seguro · Envíos desde Florida</span></div>
+  </div>
+</section>
+
+<!-- 9 · Footer -->
+<footer>
+  <p class="bp"><span class="l-en">Romance by Tata Oro is a small-lot Colombian blend. <span class="s">A Colombian soul.</span> <span class="s">An American spirit.</span><br><span class="s">One beautiful blend.</span></span><span class="l-es">Romance by Tata Oro es una mezcla colombiana de lote pequeño. <span class="s">Un alma colombiana.</span> <span class="s">Un espíritu americano.</span><br><span class="s">Una mezcla hermosa.</span></span></p>
+  <div class="links">
+    <a href="mailto:cafe@tataoro.com">cafe@tataoro.com</a>
+    <a href="https://instagram.com/cafe.tataoro" rel="noopener">@cafe.tataoro</a>
+    <a href="#story"><span class="l-en">The story</span><span class="l-es">La historia</span></a>
+    <button class="lang-link" id="langFooter" type="button">Español</button>
+  </div>
+</footer>
+
+<!-- Sticky buy bar -->
+<div class="sticky-bar" id="stickyBar" aria-hidden="true">
+  <div>
+    <div class="t">Romance</div>
+    <div class="p">$27.99 · 12 oz</div>
+  </div>
+  <a class="btn" id="stickyBtn" href="https://tataoro.com/cart/49618530697368:1?utm_source=cafe.tataoro.com&utm_medium=sticky&utm_campaign=romance"><span class="l-en">Buy</span><span class="l-es">Comprar</span></a>
+</div>
+
+
+<!-- ---- Exit survey: one professional question, four honest answers ---- -->
+<div class="exit-veil" id="exitVeil" role="dialog" aria-modal="true" aria-labelledby="exitQ">
+  <div class="exit-card exit-wrap">
+    <button class="exit-close" id="exitClose" aria-label="Close">&times;</button>
+    <h3 id="exitQ"><span class="l-en">One question before you go</span><span class="l-es">Una pregunta antes de irte</span></h3>
+    <p class="exit-sub"><span class="l-en">What&rsquo;s holding you back? We&rsquo;ll give you a straight answer.</span><span class="l-es">&iquest;Qu&eacute; te detiene? Te damos una respuesta directa.</span></p>
+
+    <button class="exit-opt" data-barrier="country">&#127758; <span class="l-en">Do you ship to my country?</span><span class="l-es">&iquest;Env&iacute;an a mi pa&iacute;s?</span></button>
+    <button class="exit-opt" data-barrier="shipping">&#128230; <span class="l-en">Shipping costs</span><span class="l-es">El costo del env&iacute;o</span></button>
+    <button class="exit-opt" data-barrier="price">&#128176; <span class="l-en">The price</span><span class="l-es">El precio</span></button>
+    <button class="exit-opt" data-barrier="wholebean">&#9203; <span class="l-en">I&rsquo;m waiting for whole bean</span><span class="l-es">Espero el grano entero</span></button>
+
+    <div class="exit-answer" data-answer="country">
+      <span class="l-en">For now: <strong>USA &amp; Canada only</strong> &mdash; this lot is too small to chase the whole world. If you&rsquo;re here, you&rsquo;re in the lucky window while it lasts. Elsewhere? Join the list and you&rsquo;ll be first when we cross borders.</span>
+      <span class="l-es">Por ahora: <strong>solo EE.&nbsp;UU. y Canad&aacute;</strong> &mdash; este lote es demasiado peque&ntilde;o para perseguir al mundo entero. Si est&aacute;s aqu&iacute;, est&aacute;s en la ventana afortunada mientras dure. &iquest;Fuera? &Uacute;nete a la lista y ser&aacute;s el primero cuando crucemos fronteras.</span>
+      <br><button class="exit-cta" data-cta="buy"><span class="l-en">I&rsquo;m in the USA/Canada &mdash; shop</span><span class="l-es">Estoy en EE.UU./Canad&aacute; &mdash; comprar</span></button>
+      <button class="exit-cta" data-cta="list"><span class="l-en">Join the list</span><span class="l-es">Unirme a la lista</span></button>
+    </div>
+
+    <div class="exit-answer" data-answer="shipping">
+      <span class="l-en">One bag pays full freight &mdash; that&rsquo;s the worst way to buy it. Two or three bags ride in the <strong>same box</strong>, so every extra bag drops the per-bag cost. Sealed, it stays fresh for months.</span>
+      <span class="l-es">Una bolsa paga todo el flete &mdash; es la peor forma de comprarlo. Dos o tres bolsas viajan en la <strong>misma caja</strong>, as&iacute; que cada bolsa extra baja el costo por bolsa. Sellado, se mantiene fresco por meses.</span>
+      <br><button class="exit-cta" data-cta="buy"><span class="l-en">Stock up smart</span><span class="l-es">Comprar con cabeza</span></button>
+    </div>
+
+    <div class="exit-answer" data-answer="price">
+      <span class="l-en">$27.99 for 340&nbsp;g of small-lot coffee with a <strong>rare Bourbon Rosado</strong> most shops can&rsquo;t even source. Honest math: at a real 250&nbsp;ml mug &mdash; nobody drinks the tiny 150&nbsp;ml &ldquo;cup&rdquo; on the box &mdash; that&rsquo;s ~22 cups, <strong>about $1.30 a cup</strong>. Your coffee shop charges four times that for a lesser bean.</span>
+      <span class="l-es">$27.99 por 340&nbsp;g de caf&eacute; de microlote con un <strong>Bourbon Rosado raro</strong> que la mayor&iacute;a de tiendas ni consigue. Matem&aacute;tica honesta: con una taza real de 250&nbsp;ml &mdash; nadie toma la &ldquo;tacita&rdquo; de 150&nbsp;ml de la caja &mdash; son ~22 tazas, <strong>unos $1.30 por taza</strong>. Tu cafeter&iacute;a cobra cuatro veces eso por un grano menor.</span>
+      <br><button class="exit-cta" data-cta="buy"><span class="l-en">$1.30 a cup &mdash; deal</span><span class="l-es">$1.30 la taza &mdash; trato</span></button>
+    </div>
+
+    <div class="exit-answer" data-answer="wholebean">
+      <span class="l-en">So are we. Whole bean arrives with the <strong>second import</strong> &mdash; and the second import happens when this first roast sells through. Every ground bag sold brings the beans closer. Taste the blend now, and you&rsquo;ll know exactly what you&rsquo;re waiting for.</span>
+      <span class="l-es">Nosotros tambi&eacute;n. El grano entero llega con la <strong>segunda importaci&oacute;n</strong> &mdash; y la segunda importaci&oacute;n ocurre cuando este primer tueste se agote. Cada bolsa molida vendida acerca el grano. Prueba la mezcla ahora y sabr&aacute;s exactamente qu&eacute; esperas.</span>
+      <br><button class="exit-cta" data-cta="buy"><span class="l-en">Help get us there &mdash; buy ground</span><span class="l-es">Ay&uacute;danos a llegar &mdash; comprar molido</span></button>
+      <button class="exit-cta" data-cta="list"><span class="l-en">Whole-bean list</span><span class="l-es">Lista de grano entero</span></button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  /* ---- Language toggle ---- */
+  var root=document.documentElement,
+      pill=document.getElementById('langPill'),
+      footBtn=document.getElementById('langFooter');
+  function apply(lang){
+    root.setAttribute('data-lang',lang);
+    root.setAttribute('lang',lang);
+    pill.textContent = lang==='en' ? 'ES' : 'EN';
+    footBtn.textContent = lang==='en' ? 'Español' : 'English';
+    var opts=document.querySelectorAll('option[data-en]');
+    for(var i=0;i<opts.length;i++){
+      opts[i].textContent = lang==='es' ? opts[i].getAttribute('data-es') : opts[i].getAttribute('data-en');
+    }
+    try{localStorage.setItem('cafe-lang',lang);}catch(e){}
+  }
+  function toggle(){apply(root.getAttribute('data-lang')==='en'?'es':'en');}
+  pill.addEventListener('click',toggle);
+  footBtn.addEventListener('click',toggle);
+  var saved=null;
+  try{saved=localStorage.getItem('cafe-lang');}catch(e){}
+  apply(saved || ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es' : 'en'));
+
+  /* ---- Cart wiring ---- */
+  var grind=document.getElementById('grind'),qty=document.getElementById('qty'),
+      buyBtn=document.getElementById('buyBtn'),stickyBtn=document.getElementById('stickyBtn');
+  var inbound=new URLSearchParams(location.search);
+  try{
+    if(inbound.get('utm_source')){sessionStorage.setItem('cafe-utm',inbound.toString());}
+    else{var s=sessionStorage.getItem('cafe-utm');if(s){inbound=new URLSearchParams(s);}}
+  }catch(e){}
+
+  var WB='49618614714520',GRD='49618530697368';
+  var qtyField=document.getElementById('qtyField'),notifyField=document.getElementById('notifyField'),
+      notifyBtn=document.getElementById('notifyBtn'),notifyDone=document.getElementById('notifyDone'),
+      notifyErr=document.getElementById('notifyErr'),notifyEmail=document.getElementById('notifyEmail');
+  function sync(){
+    var wb=grind.value===WB;
+    qtyField.hidden=wb;notifyField.hidden=!wb;buyBtn.hidden=wb;notifyBtn.hidden=!wb;
+    notifyDone.hidden=true;notifyErr.hidden=true;
+    var v=wb?GRD:grind.value;
+    buyBtn.href='https://tataoro.com/cart/'+v+':'+qty.value+'?'+cartParams('landing');
+    stickyBtn.href='https://tataoro.com/cart/'+GRD+':'+qty.value+'?'+cartParams('sticky');
+  }
+  function cartParams(medium){
+    var q=new URLSearchParams();
+    q.set('utm_source',inbound.get('utm_source')||'cafe.tataoro.com');
+    q.set('utm_medium',inbound.get('utm_medium')||medium);
+    q.set('utm_campaign',inbound.get('utm_campaign')||'romance');
+    q.set('utm_content',medium);
+    return q.toString();
+  }
+  notifyBtn.addEventListener('click',function(){
+    var email=(notifyEmail.value||'').trim();
+    notifyDone.hidden=true;notifyErr.hidden=true;
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){notifyErr.hidden=false;notifyEmail.focus();return;}
+    notifyBtn.disabled=true;
+    fetch('https://cafe.tataoro.com/api/notify',{method:'POST',headers:{'content-type':'application/json'},
+      body:JSON.stringify({email:email,intent:'whole-bean',
+        lang:document.documentElement.getAttribute('data-lang')||'en',
+        utm:inbound.toString()})})
+      .then(function(r){
+        if(!r.ok)throw 0;
+        if(grind.value!==WB)return;
+        notifyDone.hidden=false;notifyField.hidden=true;notifyBtn.hidden=true;
+      })
+      .catch(function(){if(grind.value!==WB)return;notifyErr.hidden=false;})
+      .finally(function(){notifyBtn.disabled=false;});
+  });
+  grind.addEventListener('change',sync);qty.addEventListener('change',sync);sync();
+
+
+  /* ---- Sticky bar + reveals ---- */
+  var bar=document.getElementById('stickyBar'),hero=document.querySelector('.hero'),buySec=document.getElementById('buy');
+  if('IntersectionObserver' in window){
+    var heroSeen=true,buySeen=false;
+    function update(){var show=!heroSeen&&!buySeen;bar.classList.toggle('show',show);bar.setAttribute('aria-hidden',String(!show));}
+    new IntersectionObserver(function(e){heroSeen=e[0].isIntersecting;update();},{threshold:.2}).observe(hero);
+    new IntersectionObserver(function(e){buySeen=e[0].isIntersecting;update();},{threshold:.2}).observe(buySec);
+    var reveals=document.querySelectorAll('.reveal');
+    var ro=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');ro.unobserve(en.target);}});},{threshold:.15});
+    reveals.forEach(function(el){ro.observe(el);});
+  }
+
+  /* ---- Exit survey: mouseleave on desktop, dwell fallback on mobile; once per session ---- */
+  (function(){
+    var veil=document.getElementById('exitVeil');
+    if(!veil)return;
+    var shown=false;
+    try{shown=sessionStorage.getItem('cafe-exit-shown')==='1';}catch(e){}
+    function openSurvey(){
+      if(shown)return;shown=true;
+      try{sessionStorage.setItem('cafe-exit-shown','1');}catch(e){}
+      veil.classList.add('open');
+    }
+    function closeSurvey(){veil.classList.remove('open');}
+    document.getElementById('exitClose').addEventListener('click',closeSurvey);
+    veil.addEventListener('click',function(e){if(e.target===veil)closeSurvey();});
+    document.addEventListener('mouseleave',function(e){if(e.clientY<=0)openSurvey();});
+    setTimeout(function(){if(!document.hidden)openSurvey();},25000);
+    function beacon(value){
+      try{
+        var p=JSON.stringify({kind:'barrier',value:value});
+        if(navigator.sendBeacon){navigator.sendBeacon('https://cafe.tataoro.com/api/click',new Blob([p],{type:'application/json'}));}
+        else{fetch('https://cafe.tataoro.com/api/click',{method:'POST',keepalive:true,headers:{'content-type':'application/json'},body:p});}
+      }catch(e){}
+    }
+    var opts=veil.querySelectorAll('.exit-opt');
+    for(var i=0;i<opts.length;i++){
+      opts[i].addEventListener('click',function(){
+        var v=this.getAttribute('data-barrier');
+        beacon(v);
+        var answers=veil.querySelectorAll('.exit-answer');
+        for(var j=0;j<answers.length;j++){answers[j].classList.remove('show');}
+        veil.querySelector('.exit-answer[data-answer="'+v+'"]').classList.add('show');
+      });
+    }
+    var ctas=veil.querySelectorAll('.exit-cta');
+    for(var k=0;k<ctas.length;k++){
+      ctas[k].addEventListener('click',function(){
+        closeSurvey();
+        var mode=this.getAttribute('data-cta');
+        if(mode==='list'){
+          try{grind.value=WB;grind.dispatchEvent(new Event('change'));}catch(e){}
+          var nf=document.getElementById('notifyEmail');
+          document.getElementById('buy').scrollIntoView({behavior:'smooth'});
+          if(nf)setTimeout(function(){nf.focus();},600);
+        }else{
+          document.getElementById('buy').scrollIntoView({behavior:'smooth'});
+        }
+      });
+    }
+  })();
+
+})();
+
+
+
+</script>
+<!-- Cloudflare Web Analytics (cookieless). ACTIVATION PENDING: replace
+     CF_BEACON_TOKEN with the real token from CF dashboard > Analytics & Logs >
+     Web Analytics > cafe.tataoro.com, then remove the surrounding comment markers.
+-->
