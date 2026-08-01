@@ -305,10 +305,21 @@ footer .lang-link{background:none;border:0;color:var(--gold);font-family:var(--s
   /* ---- Cart wiring ---- */
   var grind=document.getElementById('grind'),qty=document.getElementById('qty'),
       buyBtn=document.getElementById('buyBtn'),stickyBtn=document.getElementById('stickyBtn');
+  var inbound;
+  try{
+    inbound=new URLSearchParams(location.search);
+    if(inbound.get('utm_source')){sessionStorage.setItem('cafe-utm',inbound.toString());}
+    else{var s=sessionStorage.getItem('cafe-utm');if(s){inbound=new URLSearchParams(s);}}
+  }catch(e){inbound=new URLSearchParams();}
   function cart(medium){
-    return 'https://tataoro.com/cart/'+grind.value+':'+qty.value+
-      '?utm_source=cafe.tataoro.com&utm_medium='+medium+'&utm_campaign=romance';
+    var q=new URLSearchParams();
+    q.set('utm_source',inbound.get('utm_source')||'cafe.tataoro.com');
+    q.set('utm_medium',inbound.get('utm_medium')||medium);
+    q.set('utm_campaign',inbound.get('utm_campaign')||'romance');
+    q.set('utm_content',medium);
+    return 'https://tataoro.com/cart/'+grind.value+':'+qty.value+'?'+q.toString();
   }
+  (function(){var l=document.getElementById('buyBtn'),s=document.getElementById('stickyBtn');l.href=cart('landing');s.href=cart('sticky');})();
   function sync(){buyBtn.href=cart('landing');stickyBtn.href=cart('sticky');}
   grind.addEventListener('change',sync);qty.addEventListener('change',sync);
 
@@ -325,5 +336,10 @@ footer .lang-link{background:none;border:0;color:var(--gold);font-family:var(--s
   }
 })();
 </script>
+<!-- Cloudflare Web Analytics (cookieless). ACTIVATION PENDING: replace
+     CF_BEACON_TOKEN with the real token from CF dashboard > Analytics & Logs >
+     Web Analytics > cafe.tataoro.com, then remove the surrounding comment markers.
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "CF_BEACON_TOKEN"}'></script>
+-->
 </body>
 </html>
