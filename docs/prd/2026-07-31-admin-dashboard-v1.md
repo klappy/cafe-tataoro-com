@@ -3,7 +3,11 @@
 **Status:** ratified (captain direction 2026-07-31: D1a worker-native login, D2 amended
 to KV counters after Analytics Engine token constraint surfaced). **v1.1 amendment
 (captain ruling 2026-07-31): the bakeoff is retired — dashboard drops the bakeoff
-section; funnel is views → signups. Vote plumbing stays dormant server-side.** **Mode chain:**
+section; funnel is views → signups. Vote plumbing stays dormant server-side.** **v1.2 amendment (captain ruling
+2026-07-31): buy-click conversion tracking — beacon on both buy buttons (landing +
+sticky) to POST /api/click, daily counters `d:<date>:buy` and `d:<date>:buysrc:<src>`,
+dashboard gains Buy clicks (7d), View→buy %, funnel stage views→buy clicks, and a
+by-source table. Conversion rate is the paramount metric.** **Mode chain:**
 exploration → this PRD → execution flight.
 
 ## Goal
