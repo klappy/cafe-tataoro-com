@@ -5,6 +5,7 @@
   "assets": { "directory": "./public", "binding": "ASSETS" },
   "kv_namespaces": [
     { "binding": "VOTES", "id": "221d5e24388b4c53aa4e5c836d7f811a" },
-    { "binding": "WAITLIST", "id": "1d76a98e5b514b01992517574fa87f4a" }
+    { "binding": "WAITLIST", "id": "1d76a98e5b514b01992517574fa87f4a" },
+    { "binding": "STATS", "id": "9720e02d02dc472db9cdf5493a454706" }
   ]
 }
