@@ -353,8 +353,12 @@ footer .lang-link{background:none;border:0;color:var(--gold);font-family:var(--s
       body:JSON.stringify({email:email,intent:'whole-bean',
         lang:document.documentElement.getAttribute('data-lang')||'en',
         utm:inbound.toString()})})
-      .then(function(r){if(!r.ok)throw 0;notifyDone.hidden=false;notifyField.hidden=true;notifyBtn.hidden=true;})
-      .catch(function(){notifyErr.hidden=false;})
+      .then(function(r){
+        if(!r.ok)throw 0;
+        if(grind.value!==WB)return;
+        notifyDone.hidden=false;notifyField.hidden=true;notifyBtn.hidden=true;
+      })
+      .catch(function(){if(grind.value!==WB)return;notifyErr.hidden=false;})
       .finally(function(){notifyBtn.disabled=false;});
   });
   grind.addEventListener('change',sync);qty.addEventListener('change',sync);sync();
