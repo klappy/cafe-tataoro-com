@@ -32,6 +32,26 @@ export default {
       }
       return json({ error: 'method not allowed' }, 405);
     }
+    if (url.pathname === '/api/notify') {
+      if (request.method !== 'POST') return json({ error: 'method not allowed' }, 405);
+      if (!env.WAITLIST) return json({ error: 'KV namespace WAITLIST not bound' }, 500);
+      let body; try { body = await request.json(); } catch { return json({ error: 'invalid json' }, 400); }
+      const email = String(body.email || '').trim().toLowerCase();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || email.length > 254) {
+        return json({ error: 'invalid email' }, 400);
+      }
+      const record = {
+        email,
+        intent: body.intent === 'general' ? 'general' : 'whole-bean',
+        lang: body.lang === 'es' ? 'es' : 'en',
+        utm: typeof body.utm === 'string' ? body.utm.slice(0, 512) : '',
+        ts: new Date().toISOString(),
+        synced_to_shopify: false,
+      };
+      // Idempotent per email: re-signup refreshes the record, never duplicates.
+      await env.WAITLIST.put('waitlist:' + email, JSON.stringify(record));
+      return json({ ok: true });
+    }
     // Not an API route → static assets handle it.
     return env.ASSETS.fetch(request);
   },
