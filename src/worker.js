@@ -289,6 +289,7 @@ async function buildSummary(env) {
       topCountries: topN(sumAllValues(stats, dates14, 'country')),
       buyBySrc: sumAllValues(stats, dates14, 'buysrc'),
       barriers: sumAllValues(stats, dates14, 'barrier'),
+      diag: sumAllValues(stats, dates14, 'diag'),
     },
     funnel7d: {
       views: totalViews7, buys: buys7, signups: signups7, dropoffViewsToBuys, dropoffViewsToSignups,
