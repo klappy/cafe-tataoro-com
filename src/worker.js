@@ -247,42 +247,24 @@ async function loadWaitlist(env) {
 }
 
 async function buildSummary(env) {
-  const [stats, waitlist, tally] = await Promise.all([loadAllStats(env), loadWaitlist(env), readTally(env)]);
-  const allDates = Object.keys(stats).sort();
+  const [stats, waitlist] = await Promise.all([loadAllStats(env), loadWaitlist(env)]);
   const dates7 = lastNDates(7);
   const dates14 = lastNDates(14);
 
   const viewsByPage7 = {};
-  const viewsByPageAll = {};
   for (const p of PAGES) {
     viewsByPage7[p] = sumKind(stats, dates7, 'views', p);
-    viewsByPageAll[p] = sumKind(stats, allDates, 'views', p);
   }
   const totalViews7 = PAGES.reduce((s, p) => s + viewsByPage7[p], 0);
   const signups7 = sumKind(stats, dates7, 'signups');
-  const votes7 = sumKind(stats, dates7, 'votes');
   const conversion7 = totalViews7 > 0 ? (signups7 / totalViews7) * 100 : 0;
-
-  const bakeoff = ['concept-a', 'concept-b', 'concept-c'].map((p) => {
-    const concept = p.slice(-1).toUpperCase();
-    const viewsAll = viewsByPageAll[p];
-    const votes = tally[concept] || 0;
-    return {
-      concept,
-      votes,
-      views7d: viewsByPage7[p],
-      viewsAll,
-      votesPer100Views: viewsAll > 0 ? Number(((votes / viewsAll) * 100).toFixed(1)) : 0,
-    };
-  });
 
   const viewsPerDay14 = dates14.slice().reverse().map((date) => ({
     date,
     views: PAGES.reduce((s, p) => s + sumKind(stats, [date], 'views', p), 0),
   }));
 
-  const dropoffViewsToVotes = totalViews7 > 0 ? Number((100 - (votes7 / totalViews7) * 100).toFixed(2)) : 0;
-  const dropoffVotesToSignups = votes7 > 0 ? Number((100 - (signups7 / votes7) * 100).toFixed(2)) : 0;
+  const dropoffViewsToSignups = totalViews7 > 0 ? Number((100 - (signups7 / totalViews7) * 100).toFixed(2)) : 0;
 
   return {
     topline: {
@@ -294,7 +276,6 @@ async function buildSummary(env) {
     waitlist: waitlist.map((r) => ({
       email: r.email, intent: r.intent, lang: r.lang, utm: r.utm, ts: r.ts, synced: !!r.synced_to_shopify,
     })),
-    bakeoff,
     traffic: {
       viewsPerDay14,
       langSplit: sumAllValues(stats, dates14, 'lang'),
@@ -303,7 +284,7 @@ async function buildSummary(env) {
       topCountries: topN(sumAllValues(stats, dates14, 'country')),
     },
     funnel7d: {
-      views: totalViews7, votes: votes7, signups: signups7, dropoffViewsToVotes, dropoffVotesToSignups,
+      views: totalViews7, signups: signups7, dropoffViewsToSignups,
     },
   };
 }
@@ -403,12 +384,6 @@ function render(d){
   h+='<div class="cards">'+card(t.waitlistTotal,'Waitlist total')+card(t.signups7d,'Signups (7d)')+
     card(t.views7d,'Views (7d)')+card(t.conversion7d+'%','View\\u2192signup (7d)')+'</div>';
 
-  h+='<h2>Bakeoff</h2><table><tr><th>Concept</th><th>Votes</th><th>Views 7d</th><th>Views all</th><th>Votes/100 views</th></tr>';
-  d.bakeoff.forEach(function(b){
-    h+='<tr><td>'+esc(b.concept)+'</td><td>'+esc(b.votes)+'</td><td>'+esc(b.views7d)+'</td><td>'+esc(b.viewsAll)+'</td><td>'+esc(b.votesPer100Views)+'</td></tr>';
-  });
-  h+='</table>';
-
   h+='<h2>Traffic (14d)</h2>';
   var max=Math.max.apply(null,[1].concat(d.traffic.viewsPerDay14.map(function(x){return x.views;})));
   h+='<div class="bars">'+d.traffic.viewsPerDay14.map(function(x){
@@ -422,8 +397,7 @@ function render(d){
 
   h+='<h2>Funnel (7d)</h2>';
   h+='<div class="row"><span>Views</span><span>'+esc(d.funnel7d.views)+'</span></div>';
-  h+='<div class="row"><span>Votes</span><span>'+esc(d.funnel7d.votes)+' ('+esc(d.funnel7d.dropoffViewsToVotes)+'% drop-off)</span></div>';
-  h+='<div class="row"><span>Signups</span><span>'+esc(d.funnel7d.signups)+' ('+esc(d.funnel7d.dropoffVotesToSignups)+'% drop-off)</span></div>';
+  h+='<div class="row"><span>Signups</span><span>'+esc(d.funnel7d.signups)+' ('+esc(d.funnel7d.dropoffViewsToSignups)+'% drop-off)</span></div>';
 
   h+='<h2>Waitlist ('+esc(d.waitlist.length)+')</h2><table><tr><th>Email</th><th>Intent</th><th>Lang</th><th>UTM</th><th>Date</th><th>Shopify</th></tr>';
   d.waitlist.forEach(function(w){
