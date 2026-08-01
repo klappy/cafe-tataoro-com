@@ -51,7 +51,8 @@ test('verifySession rejects wrong secret, tampered signature, and expired cookie
   const cookie = await signSession(exp, secret);
 
   assert.equal(await verifySession(cookie, 'wrong-secret'), false);
-  assert.equal(await verifySession(cookie.slice(0, -1) + '0', secret), false);
+  const flip = cookie.endsWith('0') ? '1' : '0';
+  assert.equal(await verifySession(cookie.slice(0, -1) + flip, secret), false);
 
   const expired = await signSession(Math.floor(Date.now() / 1000) - 10, secret);
   assert.equal(await verifySession(expired, secret), false);
