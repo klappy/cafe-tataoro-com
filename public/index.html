@@ -3,6 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+(function(){
+  var saved=null;
+  try{saved=localStorage.getItem('cafe-lang');}catch(e){}
+  var lang=saved || ((navigator.language||'').toLowerCase().indexOf('es')===0 ? 'es' : 'en');
+  document.documentElement.setAttribute('data-lang',lang);
+  document.documentElement.setAttribute('lang',lang);
+})();
+</script>
 <title>Romance by Tata Oro — A Colombian soul. An American spirit. | Café Tata Oro</title>
 <meta name="description" content="Romance by Tata Oro — a small-lot Colombian blend. A Colombian soul. An American spirit. One beautiful blend.">
 <meta property="og:title" content="Romance by Tata Oro — Two stories. One cup.">
