@@ -521,6 +521,15 @@ export default {
       return json({ error: 'method not allowed' }, 405);
     }
 
+    if (url.pathname === '/embed/body') {
+      // Body fragment for the Shopify page shell (tataoro.com/pages/cafe) — CORS read required
+      const r = await env.ASSETS.fetch(new Request(new URL('/shopify-embed/body.html', url.origin)));
+      const h = new Headers(r.headers);
+      h.set('access-control-allow-origin', 'https://tataoro.com');
+      h.set('cache-control', 'public, max-age=60');
+      return new Response(r.body, { status: r.status, headers: h });
+    }
+
     if (url.pathname === '/api/click') {
       const clickCors = {
         'access-control-allow-origin': 'https://tataoro.com',
