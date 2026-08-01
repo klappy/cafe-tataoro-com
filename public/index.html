@@ -108,6 +108,11 @@ html[data-lang="es"] .l-en{display:none}
 .field label{display:block;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--cocoa);margin-bottom:8px}
 .field select{width:100%;background:var(--ink);color:var(--cream);border:1px solid var(--irish);padding:14px;font-family:var(--sans);font-size:15px;letter-spacing:.06em}
 .buy-note{font-size:12px;color:var(--cocoa);margin-top:16px;letter-spacing:.08em}
+.grind-note{font-size:13px;color:var(--cocoa);text-align:left;margin:-6px 0 18px;line-height:1.6}
+.field input{width:100%;background:var(--ink);color:var(--cream);border:1px solid var(--irish);padding:14px;font-family:var(--sans);font-size:15px;letter-spacing:.06em}
+#notifyBtn{width:100%}
+.notify-done{font-size:14px;color:var(--gold);margin-top:16px;font-family:var(--serif);font-style:italic}
+.notify-err{font-size:13px;color:#d9a08a;margin-top:12px}
 
 /* Sticky bar */
 .sticky-bar{position:fixed;left:0;right:0;bottom:0;background:rgba(10,10,10,.94);backdrop-filter:blur(8px);border-top:1px solid var(--irish);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 20px;transform:translateY(110%);transition:transform .3s;z-index:50}
@@ -240,10 +245,11 @@ footer .lang-link{background:none;border:0;color:var(--gold);font-family:var(--s
       <label for="grind"><span class="l-en">Grind</span><span class="l-es">Molienda</span></label>
       <select id="grind">
         <option value="49618530697368" data-en="Ground" data-es="Molido">Ground</option>
-        <option value="49618614714520" disabled data-en="Whole bean — coming soon" data-es="Grano entero — muy pronto">Whole bean — coming soon</option>
+        <option value="49618614714520" data-en="Whole bean — coming soon" data-es="Grano entero — muy pronto">Whole bean — coming soon</option>
       </select>
     </div>
-    <div class="field">
+    <div class="grind-note"><span class="l-en">This first small-lot roast is ground and ready to brew. Whole bean arrives with the next batch.</span><span class="l-es">Este primer tueste de lote pequeño es molido y listo para preparar. El grano entero llega con el próximo lote.</span></div>
+    <div class="field" id="qtyField">
       <label for="qty"><span class="l-en">Quantity</span><span class="l-es">Cantidad</span></label>
       <select id="qty">
         <option value="1" data-en="1 bag" data-es="1 bolsa">1 bag</option>
@@ -253,7 +259,14 @@ footer .lang-link{background:none;border:0;color:var(--gold);font-family:var(--s
         <option value="5" data-en="5 bags" data-es="5 bolsas">5 bags</option>
       </select>
     </div>
+    <div class="field" id="notifyField" hidden>
+      <label for="notifyEmail"><span class="l-en">Your email</span><span class="l-es">Tu correo</span></label>
+      <input type="email" id="notifyEmail" autocomplete="email" inputmode="email" placeholder="you@example.com">
+    </div>
     <a class="btn" id="buyBtn" href="https://tataoro.com/cart/49618530697368:1?utm_source=cafe.tataoro.com&utm_medium=landing&utm_campaign=romance"><span class="l-en">Buy now</span><span class="l-es">Comprar ahora</span></a>
+    <button class="btn" id="notifyBtn" type="button" hidden><span class="l-en">Notify me when whole bean arrives</span><span class="l-es">Avísame cuando llegue el grano entero</span></button>
+    <div class="notify-done" id="notifyDone" hidden><span class="l-en">You’re on the list — we’ll write when the whole bean lands.</span><span class="l-es">Estás en la lista — te escribimos cuando llegue el grano entero.</span></div>
+    <div class="notify-err" id="notifyErr" hidden><span class="l-en">That email didn’t go through — check it and try again.</span><span class="l-es">Ese correo no pasó — revísalo e inténtalo de nuevo.</span></div>
     <div class="buy-note"><span class="l-en">Secure checkout · Ships from Florida</span><span class="l-es">Pago seguro · Envíos desde Florida</span></div>
   </div>
 </section>
@@ -310,17 +323,41 @@ footer .lang-link{background:none;border:0;color:var(--gold);font-family:var(--s
     if(inbound.get('utm_source')){sessionStorage.setItem('cafe-utm',inbound.toString());}
     else{var s=sessionStorage.getItem('cafe-utm');if(s){inbound=new URLSearchParams(s);}}
   }catch(e){}
-  function cart(medium){
+
+  var WB='49618614714520',GRD='49618530697368';
+  var qtyField=document.getElementById('qtyField'),notifyField=document.getElementById('notifyField'),
+      notifyBtn=document.getElementById('notifyBtn'),notifyDone=document.getElementById('notifyDone'),
+      notifyErr=document.getElementById('notifyErr'),notifyEmail=document.getElementById('notifyEmail');
+  function sync(){
+    var wb=grind.value===WB;
+    qtyField.hidden=wb;notifyField.hidden=!wb;buyBtn.hidden=wb;notifyBtn.hidden=!wb;
+    notifyDone.hidden=true;notifyErr.hidden=true;
+    var v=wb?GRD:grind.value;
+    buyBtn.href='https://tataoro.com/cart/'+v+':'+qty.value+'?'+cartParams('landing');
+    stickyBtn.href='https://tataoro.com/cart/'+GRD+':'+qty.value+'?'+cartParams('sticky');
+  }
+  function cartParams(medium){
     var q=new URLSearchParams();
     q.set('utm_source',inbound.get('utm_source')||'cafe.tataoro.com');
     q.set('utm_medium',inbound.get('utm_medium')||medium);
     q.set('utm_campaign',inbound.get('utm_campaign')||'romance');
     q.set('utm_content',medium);
-    return 'https://tataoro.com/cart/'+grind.value+':'+qty.value+'?'+q.toString();
+    return q.toString();
   }
-  (function(){var l=document.getElementById('buyBtn'),s=document.getElementById('stickyBtn');l.href=cart('landing');s.href=cart('sticky');})();
-  function sync(){buyBtn.href=cart('landing');stickyBtn.href=cart('sticky');}
-  grind.addEventListener('change',sync);qty.addEventListener('change',sync);
+  notifyBtn.addEventListener('click',function(){
+    var email=(notifyEmail.value||'').trim();
+    notifyDone.hidden=true;notifyErr.hidden=true;
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){notifyErr.hidden=false;notifyEmail.focus();return;}
+    notifyBtn.disabled=true;
+    fetch('/api/notify',{method:'POST',headers:{'content-type':'application/json'},
+      body:JSON.stringify({email:email,intent:'whole-bean',
+        lang:document.documentElement.getAttribute('data-lang')||'en',
+        utm:inbound.toString()})})
+      .then(function(r){if(!r.ok)throw 0;notifyDone.hidden=false;notifyField.hidden=true;notifyBtn.hidden=true;})
+      .catch(function(){notifyErr.hidden=false;})
+      .finally(function(){notifyBtn.disabled=false;});
+  });
+  grind.addEventListener('change',sync);qty.addEventListener('change',sync);sync();
 
   /* ---- Sticky bar + reveals ---- */
   var bar=document.getElementById('stickyBar'),hero=document.querySelector('.hero'),buySec=document.getElementById('buy');
