@@ -403,9 +403,8 @@ function render(d){
   h+='<h2>Top countries (14d)</h2>'+rows(Object.fromEntries(d.traffic.topCountries.map(function(x){return [x.key,x.count];})));
 
   h+='<h2>Funnel (7d)</h2>';
-  h+='<div class="row"><span>Views</span><span>'+esc(d.funnel7d.views)+'</span></div>';
-  h+='<div class="row"><span>Buy clicks</span><span>'+esc(d.funnel7d.buys)+' ('+esc(d.funnel7d.dropoffViewsToBuys)+'% drop-off)</span></div>';
-  h+='<div class="row"><span>Waitlist signups</span><span>'+esc(d.funnel7d.signups)+' ('+esc(d.funnel7d.dropoffViewsToSignups)+'% drop-off)</span></div>';
+  h+='<div class="row"><span>Views → Buy clicks</span><span>'+esc(d.funnel7d.views)+' → '+esc(d.funnel7d.buys)+' ('+esc(d.funnel7d.dropoffViewsToBuys)+'% drop-off)</span></div>';
+  h+='<div class="row"><span>Views → Waitlist signups</span><span>'+esc(d.funnel7d.views)+' → '+esc(d.funnel7d.signups)+' ('+esc(d.funnel7d.dropoffViewsToSignups)+'% drop-off)</span></div>';
   h+='<h2>Buy clicks by source (14d)</h2>'+rows(d.traffic.buyBySrc);
 
   h+='<h2>Waitlist ('+esc(d.waitlist.length)+')</h2><table><tr><th>Email</th><th>Intent</th><th>Lang</th><th>UTM</th><th>Date</th><th>Shopify</th></tr>';
