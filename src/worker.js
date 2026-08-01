@@ -549,12 +549,29 @@ export default {
     }
 
     if (url.pathname === '/api/notify') {
+      // CORS for the Shopify pilot page (tataoro.com/pages/cafe)
+      const corsHeaders = {
+        'access-control-allow-origin': 'https://tataoro.com',
+        'access-control-allow-methods': 'POST, OPTIONS',
+        'access-control-allow-headers': 'content-type',
+        'access-control-max-age': '86400',
+      };
+      if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: corsHeaders });
       if (request.method !== 'POST') return json({ error: 'method not allowed' }, 405);
+      const origin = request.headers.get('origin');
+      const withCors = (resp) => {
+        if (origin === 'https://tataoro.com') {
+          const h = new Headers(resp.headers);
+          for (const [k, v] of Object.entries(corsHeaders)) h.set(k, v);
+          return new Response(resp.body, { status: resp.status, headers: h });
+        }
+        return resp;
+      };
       if (!env.WAITLIST) return json({ error: 'KV namespace WAITLIST not bound' }, 500);
-      let body; try { body = await request.json(); } catch { return json({ error: 'invalid json' }, 400); }
+      let body; try { body = await request.json(); } catch { return withCors(json({ error: 'invalid json' }, 400)); }
       const email = String(body.email || '').trim().toLowerCase();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || email.length > 254) {
-        return json({ error: 'invalid email' }, 400);
+        return withCors(json({ error: 'invalid email' }, 400));
       }
       const record = {
         email,
@@ -567,7 +584,7 @@ export default {
       // Idempotent per email: re-signup refreshes the record, never duplicates.
       await env.WAITLIST.put('waitlist:' + email, JSON.stringify(record));
       ctx.waitUntil(incrKV(env, counterKey(dateUTC(), 'signups')));
-      return json({ ok: true });
+      return withCors(json({ ok: true }));
     }
 
     // Not an API/admin route → static assets handle it.
