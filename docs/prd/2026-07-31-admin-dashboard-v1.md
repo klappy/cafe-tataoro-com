@@ -7,7 +7,12 @@ section; funnel is views → signups. Vote plumbing stays dormant server-side.**
 2026-07-31): buy-click conversion tracking — beacon on both buy buttons (landing +
 sticky) to POST /api/click, daily counters `d:<date>:buy` and `d:<date>:buysrc:<src>`,
 dashboard gains Buy clicks (7d), View→buy %, funnel stage views→buy clicks, and a
-by-source table. Conversion rate is the paramount metric.** **Mode chain:**
+by-source table. Conversion rate is the paramount metric.** **v1.3 amendment (2026-08-01): view
+counting moved to a page-load beacon (kind 'view' on /api/click) — asset-matched
+requests never invoke the worker (no run_worker_first), so server-side pageview
+recording was structurally blind; it is removed. Beacon carries page/lang/utm/ref;
+country still derives server-side from request.cf. Side effect: non-JS crawlers no
+longer inflate views.** **Mode chain:**
 exploration → this PRD → execution flight.
 
 ## Goal

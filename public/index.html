@@ -369,6 +369,18 @@ footer .lang-link{background:none;border:0;color:var(--gold);font-family:var(--s
   });
   grind.addEventListener('change',sync);qty.addEventListener('change',sync);sync();
 
+  /* ---- View beacon: asset serving bypasses the worker, so views are counted
+         client-side on load (also filters non-JS crawlers) ---- */
+  try{
+    var refHost='';
+    try{if(document.referrer){var ru=new URL(document.referrer);if(ru.host!==location.host)refHost=ru.host;}}catch(e){}
+    var viewPayload=JSON.stringify({kind:'view',page:'index',
+      lang:document.documentElement.getAttribute('data-lang')||'en',
+      utm:inbound.get('utm_source')||'',ref:refHost});
+    if(navigator.sendBeacon){navigator.sendBeacon('/api/click',new Blob([viewPayload],{type:'application/json'}));}
+    else{fetch('/api/click',{method:'POST',headers:{'content-type':'application/json'},body:viewPayload});}
+  }catch(e){}
+
   /* ---- Buy-click beacon (conversion tracking; never blocks navigation) ---- */
   function trackBuy(src){
     try{
