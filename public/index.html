@@ -305,12 +305,11 @@ footer .lang-link{background:none;border:0;color:var(--gold);font-family:var(--s
   /* ---- Cart wiring ---- */
   var grind=document.getElementById('grind'),qty=document.getElementById('qty'),
       buyBtn=document.getElementById('buyBtn'),stickyBtn=document.getElementById('stickyBtn');
-  var inbound;
+  var inbound=new URLSearchParams(location.search);
   try{
-    inbound=new URLSearchParams(location.search);
     if(inbound.get('utm_source')){sessionStorage.setItem('cafe-utm',inbound.toString());}
     else{var s=sessionStorage.getItem('cafe-utm');if(s){inbound=new URLSearchParams(s);}}
-  }catch(e){inbound=new URLSearchParams();}
+  }catch(e){}
   function cart(medium){
     var q=new URLSearchParams();
     q.set('utm_source',inbound.get('utm_source')||'cafe.tataoro.com');
