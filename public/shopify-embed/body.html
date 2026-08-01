@@ -44,7 +44,6 @@ p{max-width:62ch}
 
 /* Language toggle */
 html:not([data-lang]) .l-es{display:none}
-html:not([data-lang]) .reveal{opacity:1;transform:none}
 html[data-lang="en"] .l-es{display:none}
 html[data-lang="es"] .l-en{display:none}
 .lang-pill{position:fixed;top:16px;right:16px;z-index:60;background:rgba(10,10,10,.7);backdrop-filter:blur(6px);color:var(--gold);border:1px solid var(--gold-deep);font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;padding:9px 16px;cursor:pointer;transition:background .2s,color .2s}
@@ -131,10 +130,10 @@ footer .bp{font-family:var(--serif);font-style:italic;font-size:16px;color:var(-
 footer .links{margin-top:26px;display:flex;gap:22px;justify-content:center;flex-wrap:wrap;font-size:12px;letter-spacing:.2em;text-transform:uppercase}
 footer .lang-link{background:none;border:0;color:var(--gold);font-family:var(--sans);font-size:12px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;padding:0}
 
-/* Reveal */
+/* Reveal — visible by default; JS opts in via data-reveal after marking in-view .in */
 @media (prefers-reduced-motion: no-preference){
-  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
-  .reveal.in{opacity:1;transform:none}
+  html[data-reveal] .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+  html[data-reveal] .reveal.in{opacity:1;transform:none}
 }
 .position .s,.promise .line .s,footer .bp .s{display:inline-block}
 :focus-visible{outline:2px solid var(--gold);outline-offset:3px}

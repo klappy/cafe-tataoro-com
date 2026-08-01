@@ -90,7 +90,13 @@
     new IntersectionObserver(function(e){buySeen=e[0].isIntersecting;update();},{threshold:.2}).observe(buySec);
     var reveals=document.querySelectorAll('.reveal');
     var ro=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');ro.unobserve(en.target);}});},{threshold:.15});
-    reveals.forEach(function(el){ro.observe(el);});
+    var vh=window.innerHeight||0;
+    for(var ri=0;ri<reveals.length;ri++){
+      var el=reveals[ri],r=el.getBoundingClientRect();
+      if(r.top<vh && r.bottom>0){el.classList.add('in');}
+      else{ro.observe(el);}
+    }
+    root.setAttribute('data-reveal','');
   }
 
   /* ---- Exit survey: mouseleave on desktop, dwell fallback on mobile; once per session ---- */
