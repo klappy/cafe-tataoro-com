@@ -369,6 +369,17 @@ footer .lang-link{background:none;border:0;color:var(--gold);font-family:var(--s
   });
   grind.addEventListener('change',sync);qty.addEventListener('change',sync);sync();
 
+  /* ---- Buy-click beacon (conversion tracking; never blocks navigation) ---- */
+  function trackBuy(src){
+    try{
+      var payload=JSON.stringify({kind:'buy',src:src});
+      if(navigator.sendBeacon){navigator.sendBeacon('/api/click',new Blob([payload],{type:'application/json'}));}
+      else{fetch('/api/click',{method:'POST',keepalive:true,headers:{'content-type':'application/json'},body:payload});}
+    }catch(e){}
+  }
+  buyBtn.addEventListener('click',function(){trackBuy('landing');});
+  stickyBtn.addEventListener('click',function(){trackBuy('sticky');});
+
   /* ---- Sticky bar + reveals ---- */
   var bar=document.getElementById('stickyBar'),hero=document.querySelector('.hero'),buySec=document.getElementById('buy');
   if('IntersectionObserver' in window){

@@ -257,7 +257,9 @@ async function buildSummary(env) {
   }
   const totalViews7 = PAGES.reduce((s, p) => s + viewsByPage7[p], 0);
   const signups7 = sumKind(stats, dates7, 'signups');
+  const buys7 = sumKind(stats, dates7, 'buy');
   const conversion7 = totalViews7 > 0 ? (signups7 / totalViews7) * 100 : 0;
+  const buyRate7 = totalViews7 > 0 ? (buys7 / totalViews7) * 100 : 0;
 
   const viewsPerDay14 = dates14.slice().reverse().map((date) => ({
     date,
@@ -265,13 +267,16 @@ async function buildSummary(env) {
   }));
 
   const dropoffViewsToSignups = totalViews7 > 0 ? Number((100 - (signups7 / totalViews7) * 100).toFixed(2)) : 0;
+  const dropoffViewsToBuys = totalViews7 > 0 ? Number((100 - (buys7 / totalViews7) * 100).toFixed(2)) : 0;
 
   return {
     topline: {
       waitlistTotal: waitlist.length,
       signups7d: signups7,
+      buys7d: buys7,
       views7d: totalViews7,
       conversion7d: Number(conversion7.toFixed(2)),
+      buyRate7d: Number(buyRate7.toFixed(2)),
     },
     waitlist: waitlist.map((r) => ({
       email: r.email, intent: r.intent, lang: r.lang, utm: r.utm, ts: r.ts, synced: !!r.synced_to_shopify,
@@ -282,9 +287,10 @@ async function buildSummary(env) {
       topUtm: topN(sumAllValues(stats, dates14, 'utm')),
       topReferrers: topN(sumAllValues(stats, dates14, 'ref')),
       topCountries: topN(sumAllValues(stats, dates14, 'country')),
+      buyBySrc: sumAllValues(stats, dates14, 'buysrc'),
     },
     funnel7d: {
-      views: totalViews7, signups: signups7, dropoffViewsToSignups,
+      views: totalViews7, buys: buys7, signups: signups7, dropoffViewsToBuys, dropoffViewsToSignups,
     },
   };
 }
@@ -381,8 +387,9 @@ function render(d){
   var app=document.getElementById('app');
   var t=d.topline;
   var h='';
-  h+='<div class="cards">'+card(t.waitlistTotal,'Waitlist total')+card(t.signups7d,'Signups (7d)')+
-    card(t.views7d,'Views (7d)')+card(t.conversion7d+'%','View\\u2192signup (7d)')+'</div>';
+  h+='<div class="cards">'+card(t.views7d,'Views (7d)')+card(t.buys7d,'Buy clicks (7d)')+
+    card(t.buyRate7d+'%','View\\u2192buy (7d)')+card(t.waitlistTotal,'Waitlist total')+
+    card(t.signups7d,'Signups (7d)')+card(t.conversion7d+'%','View\\u2192signup (7d)')+'</div>';
 
   h+='<h2>Traffic (14d)</h2>';
   var max=Math.max.apply(null,[1].concat(d.traffic.viewsPerDay14.map(function(x){return x.views;})));
@@ -397,7 +404,9 @@ function render(d){
 
   h+='<h2>Funnel (7d)</h2>';
   h+='<div class="row"><span>Views</span><span>'+esc(d.funnel7d.views)+'</span></div>';
-  h+='<div class="row"><span>Signups</span><span>'+esc(d.funnel7d.signups)+' ('+esc(d.funnel7d.dropoffViewsToSignups)+'% drop-off)</span></div>';
+  h+='<div class="row"><span>Buy clicks</span><span>'+esc(d.funnel7d.buys)+' ('+esc(d.funnel7d.dropoffViewsToBuys)+'% drop-off)</span></div>';
+  h+='<div class="row"><span>Waitlist signups</span><span>'+esc(d.funnel7d.signups)+' ('+esc(d.funnel7d.dropoffViewsToSignups)+'% drop-off)</span></div>';
+  h+='<h2>Buy clicks by source (14d)</h2>'+rows(d.traffic.buyBySrc);
 
   h+='<h2>Waitlist ('+esc(d.waitlist.length)+')</h2><table><tr><th>Email</th><th>Intent</th><th>Lang</th><th>UTM</th><th>Date</th><th>Shopify</th></tr>';
   d.waitlist.forEach(function(w){
@@ -508,6 +517,19 @@ export default {
         return json(tally);
       }
       return json({ error: 'method not allowed' }, 405);
+    }
+
+    if (url.pathname === '/api/click') {
+      if (request.method !== 'POST') return json({ error: 'method not allowed' }, 405);
+      let body; try { body = await request.json(); } catch { return json({ error: 'invalid json' }, 400); }
+      if (body.kind !== 'buy') return json({ error: 'unknown kind' }, 400);
+      const src = body.src === 'sticky' ? 'sticky' : 'landing';
+      const date = dateUTC();
+      ctx.waitUntil(Promise.all([
+        incrKV(env, counterKey(date, 'buy')),
+        incrKV(env, counterKey(date, 'buysrc', src)),
+      ]));
+      return json({ ok: true });
     }
 
     if (url.pathname === '/api/notify') {
