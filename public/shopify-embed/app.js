@@ -40,8 +40,8 @@
     qtyField.hidden=wb;notifyField.hidden=!wb;buyBtn.hidden=wb;notifyBtn.hidden=!wb;
     notifyDone.hidden=true;notifyErr.hidden=true;
     var v=wb?GRD:grind.value;
-    buyBtn.href='https://tataoro.com/cart/'+v+':'+qty.value+'?'+cartParams('landing');
-    stickyBtn.href='https://tataoro.com/cart/'+GRD+':'+qty.value+'?'+cartParams('sticky');
+    buyBtn.href='https://tataoro.com/cart/add?id='+v+'&quantity='+qty.value+'&return_to=%2Fcart&'+cartParams('landing');
+    stickyBtn.href='https://tataoro.com/cart/add?id='+GRD+'&quantity='+qty.value+'&return_to=%2Fcart&'+cartParams('sticky');
   }
   function cartParams(medium){
     var q=new URLSearchParams();
