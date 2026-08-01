@@ -1,7 +1,9 @@
 # PRD — cafe.tataoro.com Admin Dashboard v1
 
 **Status:** ratified (captain direction 2026-07-31: D1a worker-native login, D2 amended
-to KV counters after Analytics Engine token constraint surfaced). **Mode chain:**
+to KV counters after Analytics Engine token constraint surfaced). **v1.1 amendment
+(captain ruling 2026-07-31): the bakeoff is retired — dashboard drops the bakeoff
+section; funnel is views → signups. Vote plumbing stays dormant server-side.** **Mode chain:**
 exploration → this PRD → execution flight.
 
 ## Goal
