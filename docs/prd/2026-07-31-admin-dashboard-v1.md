@@ -12,7 +12,16 @@ counting moved to a page-load beacon (kind 'view' on /api/click) — asset-match
 requests never invoke the worker (no run_worker_first), so server-side pageview
 recording was structurally blind; it is removed. Beacon carries page/lang/utm/ref;
 country still derives server-side from request.cf. Side effect: non-JS crawlers no
-longer inflate views.** **Mode chain:**
+longer inflate views.** **v1.4 amendment (captain ruling 2026-08-01): (a) Coffee-only
+segmentation — cafe signups live in their own KV waitlist and sync to Shopify customers
+with tags `coffee`, `cafe-waitlist` + intent tag; hair campaigns exclude `tag:coffee`;
+cafe page never uses the store newsletter form. (b) Exit-intent survey on the Shopify
+pilot page: one question ("what's holding you back"), four barrier options
+(country/shipping/price/wholebean), each answered with a straight, reverse-psychology
+close driving to buy or the whole-bean list. Barrier picks beacon to /api/click
+kind=barrier and surface on the dashboard as "Objections (14d)". Per-cup math ruling:
+compute at a 250 ml home mug, never the 150 ml box "cup" ($27.99/340 g ≈ 22 cups
+≈ $1.30/cup).** **Mode chain:**
 exploration → this PRD → execution flight.
 
 ## Goal

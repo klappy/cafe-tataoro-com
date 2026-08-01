@@ -288,6 +288,7 @@ async function buildSummary(env) {
       topReferrers: topN(sumAllValues(stats, dates14, 'ref')),
       topCountries: topN(sumAllValues(stats, dates14, 'country')),
       buyBySrc: sumAllValues(stats, dates14, 'buysrc'),
+      barriers: sumAllValues(stats, dates14, 'barrier'),
     },
     funnel7d: {
       views: totalViews7, buys: buys7, signups: signups7, dropoffViewsToBuys, dropoffViewsToSignups,
@@ -407,6 +408,7 @@ function render(d){
   h+='<div class="row"><span>Buy clicks</span><span>'+esc(d.funnel7d.buys)+' ('+esc(d.funnel7d.dropoffViewsToBuys)+'% drop-off)</span></div>';
   h+='<div class="row"><span>Waitlist signups</span><span>'+esc(d.funnel7d.signups)+' ('+esc(d.funnel7d.dropoffViewsToSignups)+'% drop-off)</span></div>';
   h+='<h2>Buy clicks by source (14d)</h2>'+rows(d.traffic.buyBySrc);
+  h+='<h2>Objections \u2014 exit survey (14d)</h2>'+rows(d.traffic.barriers);
 
   h+='<h2>Waitlist ('+esc(d.waitlist.length)+')</h2><table><tr><th>Email</th><th>Intent</th><th>Lang</th><th>UTM</th><th>Date</th><th>Shopify</th></tr>';
   d.waitlist.forEach(function(w){
@@ -520,22 +522,44 @@ export default {
     }
 
     if (url.pathname === '/api/click') {
+      const clickCors = {
+        'access-control-allow-origin': 'https://tataoro.com',
+        'access-control-allow-methods': 'POST, OPTIONS',
+        'access-control-allow-headers': 'content-type',
+        'access-control-max-age': '86400',
+      };
+      if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: clickCors });
       if (request.method !== 'POST') return json({ error: 'method not allowed' }, 405);
-      let body; try { body = await request.json(); } catch { return json({ error: 'invalid json' }, 400); }
+      const clickOrigin = request.headers.get('origin');
+      const clickWithCors = (resp) => {
+        if (clickOrigin === 'https://tataoro.com') {
+          const h = new Headers(resp.headers);
+          for (const [k, v] of Object.entries(clickCors)) h.set(k, v);
+          return new Response(resp.body, { status: resp.status, headers: h });
+        }
+        return resp;
+      };
+      let body; try { body = await request.json(); } catch { return clickWithCors(json({ error: 'invalid json' }, 400)); }
       const date = dateUTC();
+      if (body.kind === 'barrier') {
+        const allowed = ['country', 'shipping', 'price', 'wholebean'];
+        if (!allowed.includes(body.value)) return clickWithCors(json({ error: 'unknown barrier' }, 400));
+        ctx.waitUntil(incrKV(env, counterKey(date, 'barrier', body.value)));
+        return clickWithCors(json({ ok: true }));
+      }
       if (body.kind === 'buy') {
         const src = body.src === 'sticky' ? 'sticky' : 'landing';
         ctx.waitUntil(Promise.all([
           incrKV(env, counterKey(date, 'buy')),
           incrKV(env, counterKey(date, 'buysrc', src)),
         ]));
-        return json({ ok: true });
+        return clickWithCors(json({ ok: true }));
       }
       if (body.kind === 'view') {
         // Views arrive via page-load beacon: asset-matched requests never invoke
         // the worker (no run_worker_first), so server-side counting cannot see them.
         const page = PAGES.includes(body.page) ? body.page : null;
-        if (!page) return json({ error: 'unknown page' }, 400);
+        if (!page) return clickWithCors(json({ error: 'unknown page' }, 400));
         const tasks = [incrKV(env, counterKey(date, 'views', page))];
         if (body.lang === 'en' || body.lang === 'es') tasks.push(incrKV(env, counterKey(date, 'lang', body.lang)));
         if (typeof body.utm === 'string' && body.utm) tasks.push(incrKV(env, counterKey(date, 'utm', body.utm.slice(0, 40))));
@@ -543,9 +567,9 @@ export default {
         const country = request.cf && request.cf.country;
         if (country) tasks.push(incrKV(env, counterKey(date, 'country', country)));
         ctx.waitUntil(Promise.all(tasks));
-        return json({ ok: true });
+        return clickWithCors(json({ ok: true }));
       }
-      return json({ error: 'unknown kind' }, 400);
+      return clickWithCors(json({ error: 'unknown kind' }, 400));
     }
 
     if (url.pathname === '/api/notify') {
