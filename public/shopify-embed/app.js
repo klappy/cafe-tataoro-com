@@ -6,6 +6,8 @@
   try{
     var fixedEls=document.querySelectorAll('.lang-pill,.sticky-bar,.exit-veil');
     for(var fi=0;fi<fixedEls.length;fi++){document.body.appendChild(fixedEls[fi]);}
+    var rte=document.querySelector('main .rte');
+    if(rte){rte.removeAttribute('class');}
   }catch(e){}
 
   /* ---- Language toggle ---- */
