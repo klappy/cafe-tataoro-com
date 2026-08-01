@@ -281,8 +281,8 @@ async function buildSummary(env) {
     views: PAGES.reduce((s, p) => s + sumKind(stats, [date], 'views', p), 0),
   }));
 
-  const dropoffViewsToVotes = totalViews7 > 0 ? Number((100 - (votes7 / totalViews7) * 100).toFixed(2)) : 0;
-  const dropoffVotesToSignups = votes7 > 0 ? Number((100 - (signups7 / votes7) * 100).toFixed(2)) : 0;
+  const dropoffViewsToVotes = totalViews7 > 0 ? Math.max(0, Number((100 - (votes7 / totalViews7) * 100).toFixed(2))) : 0;
+  const dropoffVotesToSignups = votes7 > 0 ? Math.max(0, Number((100 - (signups7 / votes7) * 100).toFixed(2))) : 0;
 
   return {
     topline: {
@@ -491,7 +491,7 @@ async function handleAdmin(request, env, url) {
 
   const cookie = getCookie(request, 'sess');
   const authed = await verifySession(cookie, env.SESSION_SECRET);
-  if (!authed) return renderLogin(401);
+  if (!authed) return renderLogin();
 
   if (path === '/admin' && request.method === 'GET') return renderDashboard();
   if (path === '/admin/api/summary' && request.method === 'GET') return json(await buildSummary(env));
