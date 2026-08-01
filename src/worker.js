@@ -526,7 +526,7 @@ export default {
       const r = await env.ASSETS.fetch(new Request(new URL('/shopify-embed/body.html', url.origin)));
       const h = new Headers(r.headers);
       h.set('access-control-allow-origin', 'https://tataoro.com');
-      h.set('cache-control', 'public, max-age=60');
+      h.set('cache-control', 'public, max-age=0, must-revalidate');
       return new Response(r.body, { status: r.status, headers: h });
     }
 
