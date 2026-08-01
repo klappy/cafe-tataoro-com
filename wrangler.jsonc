@@ -2,7 +2,7 @@
   "name": "cafe-tataoro-com",
   "main": "src/worker.js",
   "compatibility_date": "2026-07-03",
-  "assets": { "directory": "./public", "binding": "ASSETS" },
+  "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": ["/shopify-embed/*", "/api/*", "/embed/*"] },
   "kv_namespaces": [
     { "binding": "VOTES", "id": "221d5e24388b4c53aa4e5c836d7f811a" },
     { "binding": "WAITLIST", "id": "1d76a98e5b514b01992517574fa87f4a" },

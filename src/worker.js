@@ -521,6 +521,22 @@ export default {
       return json({ error: 'method not allowed' }, 405);
     }
 
+    if (url.pathname === '/api/ping') {
+      // Zero-JS delivery telemetry: <img> pings from fragment (k=frag) and app.js first line (k=exec)
+      const k = ['frag', 'exec'].includes(url.searchParams.get('k')) ? url.searchParams.get('k') : 'other';
+      ctx.waitUntil(incrKV(env, counterKey(dateUTC(), 'diag', k)));
+      return new Response(new Uint8Array([71,73,70,56,57,97,1,0,1,0,128,0,0,0,0,0,255,255,255,33,249,4,1,0,0,0,0,44,0,0,0,0,1,0,1,0,0,2,2,68,1,0,59]), { headers: { 'content-type': 'image/gif', 'cache-control': 'no-store' } });
+    }
+
+    if (url.pathname === '/shopify-embed/app.js') {
+      // Serve via worker to count delivery (diag:served) with revalidation headers
+      ctx.waitUntil(incrKV(env, counterKey(dateUTC(), 'diag', 'served')));
+      const r = await env.ASSETS.fetch(request);
+      const h = new Headers(r.headers);
+      h.set('cache-control', 'public, max-age=0, must-revalidate');
+      return new Response(r.body, { status: r.status, headers: h });
+    }
+
     if (url.pathname === '/embed/body') {
       // Body fragment for the Shopify page shell (tataoro.com/pages/cafe) — CORS read required
       const r = await env.ASSETS.fetch(new Request(new URL('/shopify-embed/body.html', url.origin)));
