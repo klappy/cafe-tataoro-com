@@ -524,6 +524,7 @@ export default {
     if (url.pathname === '/api/click') {
       const clickCors = {
         'access-control-allow-origin': 'https://tataoro.com',
+        'access-control-allow-credentials': 'true',
         'access-control-allow-methods': 'POST, OPTIONS',
         'access-control-allow-headers': 'content-type',
         'access-control-max-age': '86400',
