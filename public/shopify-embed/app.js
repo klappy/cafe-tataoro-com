@@ -1,5 +1,13 @@
 
 (function(){
+  /* Theme wrappers carry transforms (scroll-trigger animations) which turn
+     position:fixed descendants into container-fixed. Reparent all fixed
+     elements to <body> so they pin to the real viewport. */
+  try{
+    var fixedEls=document.querySelectorAll('.lang-pill,.sticky-bar,.exit-veil');
+    for(var fi=0;fi<fixedEls.length;fi++){document.body.appendChild(fixedEls[fi]);}
+  }catch(e){}
+
   /* ---- Language toggle ---- */
   var root=document.documentElement,
       pill=document.getElementById('langPill'),
