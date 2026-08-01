@@ -7,11 +7,12 @@
 .rq-whatsapp-chat-container{display:none!important}
 body,body.gradient{background:var(--ink)!important;color:var(--cream)!important}
 main#MainContent{background:var(--ink)!important}
+#cafe-root .field,#cafe-root .field::before,#cafe-root .field::after{border:0!important;box-shadow:none!important;content:none!important}
 /* Pin our palette against theme element/rte rules (purple #533a59 bleed) */
 #cafe-root a,.sticky-bar a,.exit-veil a{color:inherit;text-decoration:none}
 #cafe-root .btn,.sticky-bar .btn{background:var(--gold)!important;color:var(--ink)!important;text-decoration:none!important;text-underline-offset:0!important}
-#cafe-root .field label{color:var(--cocoa)!important;position:static!important;display:block!important;margin:0 0 8px!important;float:none!important}
-#cafe-root .field select{background:var(--ink)!important;color:var(--cream)!important;border:1px solid var(--irish)!important;box-shadow:none!important;border-radius:0!important}
+#cafe-root .cf-field label{color:var(--cocoa)!important;position:static!important;display:block!important;margin:0 0 8px!important;float:none!important}
+#cafe-root .cf-field select{background:var(--ink)!important;color:var(--cream)!important;border:1px solid var(--irish)!important;box-shadow:none!important;border-radius:0!important}
 #cafe-root input[type=email]{background:var(--ink)!important;color:var(--cream)!important;border:1px solid var(--irish)!important;box-shadow:none!important;border-radius:0!important}
 #cafe-root h1,#cafe-root h2,#cafe-root h3,#cafe-root p{color:inherit}
 .main-page-title{display:none!important}
@@ -104,12 +105,12 @@ html[data-lang="es"] .l-en{display:none}
 .buy-card img{max-width:220px;margin:0 auto 28px}
 .card-specialty{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:4px}
 .price{font-family:var(--serif);font-size:44px;color:var(--gold);margin:2px 0 26px}
-.field{margin-bottom:18px;text-align:left}
-.field label{display:block;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--cocoa);margin-bottom:8px}
-.field select{width:100%;background:var(--ink);color:var(--cream);border:1px solid var(--irish);padding:14px;font-family:var(--sans);font-size:15px;letter-spacing:.06em}
+.cf-field{margin-bottom:18px;text-align:left}
+.cf-field label{display:block;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--cocoa);margin-bottom:8px}
+.cf-field select{width:100%;background:var(--ink);color:var(--cream);border:1px solid var(--irish);padding:14px;font-family:var(--sans);font-size:15px;letter-spacing:.06em}
 .buy-note{font-size:12px;color:var(--cocoa);margin-top:16px;letter-spacing:.08em}
 .grind-note{font-size:12.5px;color:var(--cocoa);text-align:left;margin:-8px 0 20px;line-height:1.65;opacity:.92}
-.field input{width:100%;background:var(--ink);color:var(--cream);border:1px solid var(--irish);padding:14px;font-family:var(--sans);font-size:15px;letter-spacing:.06em}
+.cf-field input{width:100%;background:var(--ink);color:var(--cream);border:1px solid var(--irish);padding:14px;font-family:var(--sans);font-size:15px;letter-spacing:.06em}
 .buy-card .btn{display:block;width:100%;margin-top:6px}
 #notifyBtn{width:100%}
 .notify-done{font-size:14px;color:var(--gold);margin-top:16px;font-family:var(--serif);font-style:italic}
@@ -260,7 +261,7 @@ footer .lang-link{background:none;border:0;color:var(--gold);font-family:var(--s
     <img src="https://cafe.tataoro.com/assets/romance-front.jpg" alt="" loading="lazy">
     <div class="card-specialty"><span class="l-en">Specialty Colombian coffee ☕ small-lot, hand-picked</span><span class="l-es">Café colombiano de especialidad ☕ lote pequeño, recolectado a mano</span></div>
     <div class="price">$27.99</div>
-    <div class="field">
+    <div class="cf-field">
       <label for="grind"><span class="l-en">Grind</span><span class="l-es">Molienda</span></label>
       <select id="grind">
         <option value="49618530697368" data-en="Ground" data-es="Molido">Ground</option>
@@ -268,7 +269,7 @@ footer .lang-link{background:none;border:0;color:var(--gold);font-family:var(--s
       </select>
     </div>
     <div class="grind-note"><span class="l-en">This first small-lot roast is ground and ready to brew. Whole bean arrives with the next batch.</span><span class="l-es">Este primer tueste de lote pequeño es molido y listo para preparar. El grano entero llega con el próximo lote.</span></div>
-    <div class="field" id="qtyField">
+    <div class="cf-field" id="qtyField">
       <label for="qty"><span class="l-en">Quantity</span><span class="l-es">Cantidad</span></label>
       <select id="qty">
         <option value="1" data-en="1 bag" data-es="1 bolsa">1 bag</option>
@@ -278,7 +279,7 @@ footer .lang-link{background:none;border:0;color:var(--gold);font-family:var(--s
         <option value="5" data-en="5 bags" data-es="5 bolsas">5 bags</option>
       </select>
     </div>
-    <div class="field" id="notifyField" hidden>
+    <div class="cf-field" id="notifyField" hidden>
       <label for="notifyEmail"><span class="l-en">Your email</span><span class="l-es">Tu correo</span></label>
       <input type="email" id="notifyEmail" autocomplete="email" inputmode="email" placeholder="you@example.com">
     </div>
