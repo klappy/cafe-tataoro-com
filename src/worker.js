@@ -522,14 +522,30 @@ export default {
     if (url.pathname === '/api/click') {
       if (request.method !== 'POST') return json({ error: 'method not allowed' }, 405);
       let body; try { body = await request.json(); } catch { return json({ error: 'invalid json' }, 400); }
-      if (body.kind !== 'buy') return json({ error: 'unknown kind' }, 400);
-      const src = body.src === 'sticky' ? 'sticky' : 'landing';
       const date = dateUTC();
-      ctx.waitUntil(Promise.all([
-        incrKV(env, counterKey(date, 'buy')),
-        incrKV(env, counterKey(date, 'buysrc', src)),
-      ]));
-      return json({ ok: true });
+      if (body.kind === 'buy') {
+        const src = body.src === 'sticky' ? 'sticky' : 'landing';
+        ctx.waitUntil(Promise.all([
+          incrKV(env, counterKey(date, 'buy')),
+          incrKV(env, counterKey(date, 'buysrc', src)),
+        ]));
+        return json({ ok: true });
+      }
+      if (body.kind === 'view') {
+        // Views arrive via page-load beacon: asset-matched requests never invoke
+        // the worker (no run_worker_first), so server-side counting cannot see them.
+        const page = PAGES.includes(body.page) ? body.page : null;
+        if (!page) return json({ error: 'unknown page' }, 400);
+        const tasks = [incrKV(env, counterKey(date, 'views', page))];
+        if (body.lang === 'en' || body.lang === 'es') tasks.push(incrKV(env, counterKey(date, 'lang', body.lang)));
+        if (typeof body.utm === 'string' && body.utm) tasks.push(incrKV(env, counterKey(date, 'utm', body.utm.slice(0, 40))));
+        if (typeof body.ref === 'string' && body.ref && body.ref !== url.host) tasks.push(incrKV(env, counterKey(date, 'ref', body.ref.slice(0, 60))));
+        const country = request.cf && request.cf.country;
+        if (country) tasks.push(incrKV(env, counterKey(date, 'country', country)));
+        ctx.waitUntil(Promise.all(tasks));
+        return json({ ok: true });
+      }
+      return json({ error: 'unknown kind' }, 400);
     }
 
     if (url.pathname === '/api/notify') {
@@ -552,11 +568,6 @@ export default {
       await env.WAITLIST.put('waitlist:' + email, JSON.stringify(record));
       ctx.waitUntil(incrKV(env, counterKey(dateUTC(), 'signups')));
       return json({ ok: true });
-    }
-
-    if (request.method === 'GET') {
-      const page = pageForPath(url.pathname);
-      if (page) ctx.waitUntil(recordPageView(env, request, url, page));
     }
 
     // Not an API/admin route → static assets handle it.
